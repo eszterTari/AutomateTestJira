@@ -1,31 +1,18 @@
 package test.componentsWithGlass;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
-
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.Properties;
 
 public class TestComponentsWithGlass {
 
     @Test
     public void testLogin() {
-        String rootPath = Thread.currentThread().getContextClassLoader().getResource("").getPath();
-        String appConfigPath = rootPath + "login/login.properties";
+        //Projects: browse_link, View all projects: id=project_view_all_link_lnk,
+        //click on project name: original-title="Private Project 4"
+        //click on settings: data-tooltip="Project settings"
+        //permission: Glass View permission
 
-        Properties catalogProps = new Properties();
-        try {
-            catalogProps.load(new FileInputStream(appConfigPath));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        String username = catalogProps.getProperty("username");
-        String password = catalogProps.getProperty("password");
-        System.out.println(username + ": " + password);
     }
 
     @ParameterizedTest
