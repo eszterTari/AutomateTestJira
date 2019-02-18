@@ -1,12 +1,17 @@
 package pageFactory;
 
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.util.List;
 
 public class GlassDocument {
 
@@ -37,16 +42,25 @@ public class GlassDocument {
     @FindBy(id = "administer_project_components")
     private WebElement componentsAdminMenuItem;
 
-    @FindBy(xpath = ".//*[id='components-add__component']/div/button")
-    private WebElement addComponentsButton;
+    @FindBy(xpath = ".//form[@id='components-add__component']/div[@class='components-add__confirm']/button")
+    private WebElement addComponentButton;
+
+    @FindBy(xpath = ".//form[@id='components-add__component']/div[@class='components-add__name']/input")
+    private WebElement componentNameInput;
+
+    @FindBy(xpath = ".//form[@id='components-add__component']/div[@class='components-add__assignee']/*/input")
+    private WebElement componentAssigneeInput;
+
+    @FindBys(@FindBy(xpath = ".//table[@id='components-table']/tbody[@class='items']"))
+    private List<WebElement> componentTableRows;
 
     public GlassDocument(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
+        wait = new WebDriverWait(driver, TIMEOUT, POLLING);
     }
 
     public void gotToComponentPageProjectSettings() {
-        wait = new WebDriverWait(driver, TIMEOUT, POLLING);
         wait.until(ExpectedConditions.elementToBeClickable(projectsMenuItem));
         projectsMenuItem.click();
 
@@ -63,7 +77,31 @@ public class GlassDocument {
         componentsAdminMenuItem.click();
     }
 
+    public void setComponentName(String componentName) {
+        componentNameInput.sendKeys(componentName);
+    }
 
+    public String getTextFromComponentNameInput() {
+        return componentNameInput.getAttribute("value");
+    }
+
+    public void setAssigneeInput(String assignee) {
+        wait.until(ExpectedConditions.elementToBeClickable(componentAssigneeInput));
+        componentAssigneeInput.click();
+        componentAssigneeInput.sendKeys(assignee);
+
+        wait.until(ExpectedConditions.textToBePresentInElementValue(componentAssigneeInput, assignee));
+        componentAssigneeInput.sendKeys(Keys.ENTER);
+    }
+
+    public String getAssigneInputText() {
+        return componentAssigneeInput.getAttribute("value");
+    }
+
+    public void clickOnAddComponent() {
+        wait.until(ExpectedConditions.elementToBeClickable(addComponentButton));
+        addComponentButton.click();
+    }
 
     private void highlighterMethod(WebElement webElement, WebDriver webDriver) {
         JavascriptExecutor js = (JavascriptExecutor) webDriver;

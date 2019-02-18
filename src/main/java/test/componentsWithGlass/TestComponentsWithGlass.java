@@ -25,13 +25,28 @@ public class TestComponentsWithGlass {
     }
 
     @Test
-    public void testGoToComponentsPage() {
+    public void testGoToComponentsPageByProjectSettings() {
+        String inputName = "Test Component";
+        String inputAssigne1 = "Project default";
+        //TODO: into csv
+        String inputAssigne2 = "Component lead";
+        String inputAssigne3 = "Project lead";
+        String inputAssigne4 = "Unassigned";
+
+
+
         login.loginWithDashboard();
 
         GlassDocument glassDocument = new GlassDocument(driver);
         glassDocument.gotToComponentPageProjectSettings();
 
+        glassDocument.setComponentName(inputName);
+        assertEquals(inputName, glassDocument.getTextFromComponentNameInput());
 
+        glassDocument.setAssigneeInput(inputAssigne1);
+        assertTrue(glassDocument.getAssigneInputText().contains(inputAssigne1));
+
+        glassDocument.clickOnAddComponent();
 
     }
 
