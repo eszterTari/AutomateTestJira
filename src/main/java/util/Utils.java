@@ -4,6 +4,13 @@ import org.apache.commons.exec.OS;
 
 public class Utils {
 
+    /**
+     * Environment variables
+     * driverPath
+     * username
+     * password
+     * myDriver
+     */
     public static void setup() {
         if (OS.isFamilyMac()) {
 
