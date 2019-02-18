@@ -21,7 +21,7 @@ public class Utils {
                 //driver.manage().window().maximize();
             }else {
                 System.out.println("2*******************");
-                System.out.println("Launching chrome browser");
+                System.out.println("Launching firefox browser");
                 EnvironmentManagerMac.initFireFoxWebDriver();
                 //driver.manage().window().maximize();
             }
@@ -35,7 +35,7 @@ public class Utils {
 
             }else {
                 System.out.println("4*******************");
-                System.out.println("Launching chrome browser");
+                System.out.println("Launching firefox browser");
                 EnvironmentManagerWin.initFireFoxWebDriver();
 
             }
