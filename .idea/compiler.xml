@@ -9,5 +9,8 @@
         <module name="AutomateTestJira" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="AutomateTestJira" target="8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
