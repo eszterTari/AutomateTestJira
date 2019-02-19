@@ -35,16 +35,23 @@ public class TestComponentsWithGlass {
 
 
 
-        login.loginWithDashboard();
+        login.login();
 
         GlassDocument glassDocument = new GlassDocument(driver);
-        glassDocument.gotToComponentPageProjectSettings();
+        glassDocument.goToComponentPageProjectSettings();
 
         glassDocument.setComponentName(inputName);
         assertEquals(inputName, glassDocument.getTextFromComponentNameInput());
 
         glassDocument.setAssigneeInput(inputAssigne1);
         assertTrue(glassDocument.getAssigneeInputText().contains(inputAssigne1));
+
+        //TODO:Temp solution: If the test project is not exist
+        if(!glassDocument.isProjectExist(inputName)) glassDocument.clickOnAddComponent();
+        else {
+            glassDocument.setComponentName("");
+            glassDocument.setAssigneeInput("");
+        }
 
         //TODO: timing!!!!
         /*glassDocument.clickOnAddComponent();
@@ -53,6 +60,8 @@ public class TestComponentsWithGlass {
         glassDocument.removeProject(inputName);
 
         assertFalse(glassDocument.isProjectExist(inputName), "The component's name is listed in the component list!");*/
+
+        glassDocument.clickOnGlassDocMenuItem();
 
     }
 

@@ -51,6 +51,9 @@ public class GlassDocument {
     @FindBys(@FindBy(xpath = ".//table[@id='components-table']/tbody[@class='items']/tr"))
     private List<WebElement> componentTableRows;
 
+    @FindBy(xpath = "//a[@data-link-id='com.codecanvas.glass:glass']")
+    private WebElement glassDocMenuItemPath;
+
     By componentTablePath = By.xpath(".//table[@id='components-table']/tbody[@class='items']");
     By componentTableRowsPath = By.xpath(".//table[@id='components-table']/tbody[@class='items']/tr");
     By componentNamePathFromRow = By.xpath(".//td[@class='components-table__name']/div/a");
@@ -73,7 +76,7 @@ public class GlassDocument {
         wait = new WebDriverWait(driver, TIMEOUT, POLLING);
     }
 
-    public void gotToComponentPageProjectSettings() {
+    public void goToComponentPageProjectSettings() {
         wait.until(ExpectedConditions.elementToBeClickable(projectsMenuItem));
         projectsMenuItem.click();
 
@@ -83,6 +86,7 @@ public class GlassDocument {
         wait.until(ExpectedConditions.elementToBeClickable(project));
         project.click();
 
+        //TODO: sometimes can't be found
         wait.until(ExpectedConditions.elementToBeClickable(projectSettingsMenuItem));
         projectSettingsMenuItem.click();
 
@@ -91,7 +95,9 @@ public class GlassDocument {
     }
 
     public void setComponentName(String componentName) {
+        wait.until(ExpectedConditions.elementToBeClickable(componentNameInput));
         componentNameInput.sendKeys(componentName);
+        //wait.until(ExpectedConditions.textToBePresentInElementValue(componentNameInput, componentName));
     }
 
     public String getTextFromComponentNameInput() {
@@ -162,11 +168,29 @@ public class GlassDocument {
         }
     }
 
+    public void clickOnGlassDocMenuItem() {
+        wait.until(ExpectedConditions.elementToBeClickable(glassDocMenuItemPath));
+        glassDocMenuItemPath.click();
+
+        checkAlert();
+    }
+
     private void highlighterMethod(WebElement webElement, WebDriver webDriver) {
         JavascriptExecutor js = (JavascriptExecutor) webDriver;
         //js.executeScript("arguments[0].setAttribute('style', 'background: yellow; border: 2px solid red;');", webElement);
         //js.executeScript("arguments[0].setAttribute('style', 'color: red;');", webElement);
         js.executeScript("arguments[0].setAttribute('style', 'border: 2px solid red; border-color: red;');", webElement);
+    }
+
+    public void checkAlert() {
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, 2);
+            wait.until(ExpectedConditions.alertIsPresent());
+            Alert alert = driver.switchTo().alert();
+            alert.accept();
+        } catch (Exception e) {
+            //exception handling
+        }
     }
 
 }
