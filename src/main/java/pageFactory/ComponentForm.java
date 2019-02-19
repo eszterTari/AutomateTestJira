@@ -9,7 +9,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
 
-public class ProjectSettings {
+public class ComponentForm {
     private WebDriverWait wait;
     private static final int TIMEOUT = 5;
     private static final int POLLING = 100;
@@ -62,7 +62,7 @@ public class ProjectSettings {
 
     By submitButtonOnDeleteForm = By.xpath("//input[@id='submit']");
 
-    public ProjectSettings(WebDriver driver) {
+    public ComponentForm(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
         wait = new WebDriverWait(driver, TIMEOUT, POLLING);

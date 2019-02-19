@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import org.openqa.selenium.WebDriver;
-import pageFactory.ProjectSettings;
+import pageFactory.ComponentForm;
 import pageFactory.GlassDocument;
 import pageFactory.Login;
 import util.RunEnvironment;
@@ -38,20 +38,20 @@ public class TestComponentsWithGlass {
 
         GlassDocument glassDocument = new GlassDocument(driver);
 
-        ProjectSettings projectSettings = new ProjectSettings(driver);
-        projectSettings.goToComponentsPageWithProjectSettings();
+        ComponentForm componentForm = new ComponentForm(driver);
+        componentForm.goToComponentsPageWithProjectSettings();
 
-        projectSettings.setComponentName(inputName);
-        assertEquals(inputName, projectSettings.getTextFromComponentNameInput());
+        componentForm.setComponentName(inputName);
+        assertEquals(inputName, componentForm.getTextFromComponentNameInput());
 
-        projectSettings.setAssigneeInput(inputAssigne1);
-        assertTrue(projectSettings.getAssigneeInputText().contains(inputAssigne1));
+        componentForm.setAssigneeInput(inputAssigne1);
+        assertTrue(componentForm.getAssigneeInputText().contains(inputAssigne1));
 
         //TODO:Temp solution: If the test project is not exist
-        if(!projectSettings.isProjectExist(inputName)) projectSettings.clickOnAddComponent();
+        if(!componentForm.isProjectExist(inputName)) componentForm.clickOnAddComponent();
         else {
-            projectSettings.setComponentName("");
-            projectSettings.setAssigneeInput("");
+            componentForm.setComponentName("");
+            componentForm.setAssigneeInput("");
         }
 
         //TODO: timing!!!!
@@ -66,16 +66,16 @@ public class TestComponentsWithGlass {
         //Check component with Glass
         glassDocument.clickOnGlassDocMenuItem();
 
-        assertTrue(projectSettings.isProjectExist(inputName), "The " + inputName + " is not presented in the component list");
+        assertTrue(componentForm.isProjectExist(inputName), "The " + inputName + " is not presented in the component list");
     }
 
     @Test
     void testCheckCreatedComponentBySideMenu() {
         login.login();
-        ProjectSettings projectSettings = new ProjectSettings(driver);
-        projectSettings.goToTheProject();
+        ComponentForm componentForm = new ComponentForm(driver);
+        componentForm.goToTheProject();
 
-        projectSettings.gotToComponentsPageWithSideBar();
+        componentForm.gotToComponentsPageWithSideBar();
     }
 
     @ParameterizedTest
