@@ -36,6 +36,14 @@ public class BrowseProjects {
     @FindBy(xpath = "//*[@id=\"content\"]/div[1]/div/div[1]/header/div/div[2]/h1/div/div/a")
     WebElement projectNameOnDetailedPage;
 
+    @FindBy(css = "span[title='Reports']")
+    WebElement reportsSideBarMenuPoint;
+
+    @FindBy(className = "subnavigator-title")
+    WebElement subNavigatorTitle;
+
+    List<String> projectNamesOfRequirements = new ArrayList<>(Arrays.asList("COALA", "JETI", "TOUCAN"));
+
     public BrowseProjects(WebDriver driver) {
         this.driver = driver;
         this.wait = new WebDriverWait(driver, TIMEOUT, POLLING);
@@ -66,6 +74,19 @@ public class BrowseProjects {
             wait.until(ExpectedConditions.elementToBeClickable(projectNameOnDetailedPage));
             String projectNameOnDetailedProjectPage = projectNameOnDetailedPage.getText();
             if (!projectNameOnDetailedProjectPage.contains(projectName.getText())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean navigateToRequiredProjectsReports() {
+        for (String projectName : projectNamesOfRequirements) {
+            driver.get("https://jira.codecool.codecanvas.hu/projects/" + projectName + "?selectedItem=com.atlassian.jira.jira-projects-plugin:report-page");
+            wait.until(ExpectedConditions.elementToBeClickable(reportsSideBarMenuPoint));
+            reportsSideBarMenuPoint.click();
+            String subNavigatorTitleText = subNavigatorTitle.getText();
+            if (!subNavigatorTitleText.equals("All reports")) {
                 return false;
             }
         }

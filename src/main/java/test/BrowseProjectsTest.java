@@ -39,6 +39,11 @@ public class BrowseProjectsTest {
         assertEquals(true, browseProjects.detailedPageOfProjectOfRequirements());
     }
 
+    @Test
+    public void navigateToRequiredProjectsReports_test() {
+        assertEquals(true, browseProjects.navigateToRequiredProjectsReports());
+    }
+
     @AfterEach
     public void tearDown() {
         Utils.tearDown();
