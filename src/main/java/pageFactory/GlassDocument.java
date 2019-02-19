@@ -8,6 +8,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class GlassDocument {
 
@@ -50,6 +51,8 @@ public class GlassDocument {
     @FindBys(@FindBy(xpath = ".//table[@id='components-table']/tbody[@class='items']/tr"))
     private List<WebElement> componentTableRows;
 
+    By componentTablePath = By.xpath(".//table[@id='components-table']/tbody[@class='items']");
+    By componentTableRowsPath = By.xpath(".//table[@id='components-table']/tbody[@class='items']/tr");
     By componentNamePathFromRow = By.xpath(".//td[@class='components-table__name']/div/a");
     By dynamicTableMenuPathFromRow = By.xpath(".//td[@class='dynamic-table__actions']/div/a");
 
@@ -104,16 +107,30 @@ public class GlassDocument {
         componentAssigneeInput.sendKeys(Keys.ENTER);
     }
 
-    public String getAssigneInputText() {
+    public String getAssigneeInputText() {
         return componentAssigneeInput.getAttribute("value");
     }
 
     public void clickOnAddComponent() {
         wait.until(ExpectedConditions.elementToBeClickable(addComponentButton));
         addComponentButton.click();
+
+        //TODO: instead of this
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public boolean isProjectExist(String projectName) {
+
+/*        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(componentTablePath));
+        //wait until all rows are in item-state-ready, after adding itsstate is item-state-successful
+        for (WebElement row : componentTableRows) {
+            wait.until(ExpectedConditions.attributeContains(row, "class", "item-state-ready"));
+        }*/
+
         try {
             for (WebElement row : componentTableRows) {
                 if (row.findElement(componentNamePathFromRow).getText().equals(projectName))
@@ -126,22 +143,21 @@ public class GlassDocument {
     }
 
     public void removeProject(String projectName) {
+        //wait until all rows are in item-state-ready, after adding itsstate is item-state-successful
+/*        for (WebElement row : componentTableRows) {
+            wait.until(ExpectedConditions.attributeContains(row, "class", "item-state-ready"));
+        }*/
+
+
         for (WebElement row : componentTableRows) {
             if (row.findElement(componentNamePathFromRow).getText().equals(projectName)) {
-                //click menu: td class=dynamic-table__actions/div/a
                 WebElement dynamicTableMenu = row.findElement(dynamicTableMenuPathFromRow);
                 dynamicTableMenu.click();
-                //dynamic: div id=component-actions-10011, a id=deletecomponent_10011
-                wait.until(ExpectedConditions.presenceOfElementLocated(deleteButtonPath));
-                WebElement deleteButton = driver.findElement(deleteButtonPath);
-                //highlighterMethod(deleteButton, driver);
-                //driver.switchTo().activeElement();
+
+                WebElement deleteButton = wait.until(ExpectedConditions.presenceOfElementLocated(deleteButtonPath));
                 deleteButton.click();
 
-                //driver.switchTo().activeElement();
-                wait.until(ExpectedConditions.visibilityOfElementLocated(submitButtonOnDeleteForm));
-                //highlighterMethod(driver.findElement(submitButtonOnDeleteForm), driver);
-                driver.findElement(submitButtonOnDeleteForm).click();
+                wait.until(ExpectedConditions.visibilityOfElementLocated(submitButtonOnDeleteForm)).click();
             }
         }
     }
