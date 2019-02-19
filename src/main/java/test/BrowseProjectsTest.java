@@ -24,7 +24,7 @@ public class BrowseProjectsTest {
         driver.manage().window().maximize();
         login = new Login(driver);
         browseProjects = new BrowseProjects(driver);
-        login.loginWithDashboard();
+        login.login();
     }
 
     @Test
