@@ -5,11 +5,12 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
 
-public class ComponentsPage {
+public class ProjectSettings {
     private WebDriverWait wait;
     private static final int TIMEOUT = 5;
     private static final int POLLING = 100;
@@ -26,6 +27,8 @@ public class ComponentsPage {
     private WebElement project;
 
     @FindBy(className = "aui-sidebar-footer")
+    //@FindBy(xpath = "//div[@class='aui-sidebar-footer']/a[@data-tooltip='Project settings']")
+    //@FindBy(xpath = "//div[@class='aui-sidebar-footer']/a[@href='/plugins/servlet/project-config/PP4']")
     private WebElement projectSettingsMenuItem;
 
     @FindBy(id = "administer_project_components")
@@ -50,17 +53,18 @@ public class ComponentsPage {
 
     //dynamic: div id=component-actions-10011, a id=deletecomponent_10011
     //By deleteButtonPath = By.xpath(".//div[starts-with(@id, 'component-actions-')]/ul/li/a[starts-with(@id, 'deletecomponent_')]");
-    //TODO: nem mukodik!!!!! By deleteButtonPath = By.xpath("//a[contains(@id, 'deletecomponent_')]");
+    //TODO: not working!!!!! By deleteButtonPath = By.xpath("//a[contains(@id, 'deletecomponent_')]");
     By deleteButtonPath = By.linkText("Delete");
     //By deleteButtonPath = By.cssSelector("a[id *= 'deletecomponent']");
     //By deleteButtonPath = By.cssSelector("a:contains('deletecomponent')");
 
     By submitButtonOnDeleteForm = By.xpath("//input[@id='submit']");
 
-    public ComponentsPage(WebDriver driver) {
+    public ProjectSettings(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
         wait = new WebDriverWait(driver, TIMEOUT, POLLING);
+        //wait = new WebDriverWait(driver, 20);
     }
 
     //TODO: should moved
@@ -78,8 +82,13 @@ public class ComponentsPage {
     public void goToComponentPageProjectSettings() {
         goToTheProject();
 
+        waitForPageLoadComplete(driver, 1000);
+
         //TODO: sometimes can't be found and it stucked
-        wait.until(ExpectedConditions.visibilityOf(projectSettingsMenuItem)).click();
+        wait.until(ExpectedConditions.elementToBeClickable(projectSettingsMenuItem
+                .findElement(By.tagName("a"))));
+
+        projectSettingsMenuItem.click();
 
         wait.until(ExpectedConditions.elementToBeClickable(componentsAdminMenuItem)).click();
     }
@@ -156,6 +165,13 @@ public class ComponentsPage {
                 wait.until(ExpectedConditions.visibilityOfElementLocated(submitButtonOnDeleteForm)).click();
             }
         }
+    }
+
+    public void waitForPageLoadComplete(WebDriver driver, int specifiedTimeout) {
+        WebDriverWait wait = new WebDriverWait(driver, specifiedTimeout);
+        wait.until(driver1 -> String
+                .valueOf(((JavascriptExecutor) driver1).executeScript("return document.readyState"))
+                .equals("complete"));
     }
 
 }

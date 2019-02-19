@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import org.openqa.selenium.WebDriver;
-import pageFactory.ComponentsPage;
+import pageFactory.ProjectSettings;
 import pageFactory.GlassDocument;
 import pageFactory.Login;
 import util.RunEnvironment;
@@ -34,25 +34,23 @@ public class TestComponentsWithGlass {
         String inputAssigne3 = "Project lead";
         String inputAssigne4 = "Unassigned";
 
-
-
         login.login();
 
         GlassDocument glassDocument = new GlassDocument(driver);
-        ComponentsPage componentsPage = new ComponentsPage(driver);
-        componentsPage.goToComponentPageProjectSettings();
+        ProjectSettings projectSettings = new ProjectSettings(driver);
+        projectSettings.goToComponentPageProjectSettings();
 
-        componentsPage.setComponentName(inputName);
-        assertEquals(inputName, componentsPage.getTextFromComponentNameInput());
+        projectSettings.setComponentName(inputName);
+        assertEquals(inputName, projectSettings.getTextFromComponentNameInput());
 
-        componentsPage.setAssigneeInput(inputAssigne1);
-        assertTrue(componentsPage.getAssigneeInputText().contains(inputAssigne1));
+        projectSettings.setAssigneeInput(inputAssigne1);
+        assertTrue(projectSettings.getAssigneeInputText().contains(inputAssigne1));
 
         //TODO:Temp solution: If the test project is not exist
-        if(!componentsPage.isProjectExist(inputName)) componentsPage.clickOnAddComponent();
+        if(!projectSettings.isProjectExist(inputName)) projectSettings.clickOnAddComponent();
         else {
-            componentsPage.setComponentName("");
-            componentsPage.setAssigneeInput("");
+            projectSettings.setComponentName("");
+            projectSettings.setAssigneeInput("");
         }
 
         //TODO: timing!!!!
@@ -67,7 +65,7 @@ public class TestComponentsWithGlass {
         //Check component with Glass
         glassDocument.clickOnGlassDocMenuItem();
 
-        assertTrue(componentsPage.isProjectExist(inputName), "The " + inputName + " is not presented in the component list");
+        assertTrue(projectSettings.isProjectExist(inputName), "The " + inputName + " is not presented in the component list");
     }
 
     @ParameterizedTest
