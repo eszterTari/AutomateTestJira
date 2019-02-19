@@ -21,6 +21,7 @@ public class BrowseProjectsTest {
     public void setup() {
         Utils.setup();
         driver = RunEnvironment.getWebDriver();
+        driver.manage().window().maximize();
         login = new Login(driver);
         browseProjects = new BrowseProjects(driver);
         login.loginWithDashboard();
@@ -31,6 +32,11 @@ public class BrowseProjectsTest {
         String expectedPageTitle = "Browse projects - Jira";
         browseProjects.viewAllProjects();
         assertEquals(expectedPageTitle, browseProjects.getPageTitle());
+    }
+
+    @Test
+    public void detailedPageOfProjectOfRequirements_test() {
+        assertEquals(true, browseProjects.detailedPageOfProjectOfRequirements());
     }
 
     @AfterEach
