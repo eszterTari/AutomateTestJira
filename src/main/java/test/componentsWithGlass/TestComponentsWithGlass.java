@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import org.openqa.selenium.WebDriver;
+import pageFactory.ComponentsPage;
 import pageFactory.GlassDocument;
 import pageFactory.Login;
 import util.RunEnvironment;
@@ -38,19 +39,20 @@ public class TestComponentsWithGlass {
         login.login();
 
         GlassDocument glassDocument = new GlassDocument(driver);
-        glassDocument.goToComponentPageProjectSettings();
+        ComponentsPage componentsPage = new ComponentsPage(driver);
+        componentsPage.goToComponentPageProjectSettings();
 
-        glassDocument.setComponentName(inputName);
-        assertEquals(inputName, glassDocument.getTextFromComponentNameInput());
+        componentsPage.setComponentName(inputName);
+        assertEquals(inputName, componentsPage.getTextFromComponentNameInput());
 
-        glassDocument.setAssigneeInput(inputAssigne1);
-        assertTrue(glassDocument.getAssigneeInputText().contains(inputAssigne1));
+        componentsPage.setAssigneeInput(inputAssigne1);
+        assertTrue(componentsPage.getAssigneeInputText().contains(inputAssigne1));
 
         //TODO:Temp solution: If the test project is not exist
-        if(!glassDocument.isProjectExist(inputName)) glassDocument.clickOnAddComponent();
+        if(!componentsPage.isProjectExist(inputName)) componentsPage.clickOnAddComponent();
         else {
-            glassDocument.setComponentName("");
-            glassDocument.setAssigneeInput("");
+            componentsPage.setComponentName("");
+            componentsPage.setAssigneeInput("");
         }
 
         //TODO: timing!!!!
@@ -65,7 +67,7 @@ public class TestComponentsWithGlass {
         //Check component with Glass
         glassDocument.clickOnGlassDocMenuItem();
 
-        assertTrue(glassDocument.isProjectExist(inputName), "The " + inputName + " is not presented in the component list");
+        assertTrue(componentsPage.isProjectExist(inputName), "The " + inputName + " is not presented in the component list");
     }
 
     @ParameterizedTest
