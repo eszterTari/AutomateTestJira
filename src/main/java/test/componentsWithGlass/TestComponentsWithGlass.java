@@ -26,7 +26,7 @@ public class TestComponentsWithGlass {
     }
 
     @Test
-    public void testCheckCreatedComponentProjectSettings() {
+    public void testCheckCreatedComponentByProjectSettings() {
         String inputName = "Test Component";
         String inputAssigne1 = "Project default";
         //TODO: into csv
@@ -37,8 +37,9 @@ public class TestComponentsWithGlass {
         login.login();
 
         GlassDocument glassDocument = new GlassDocument(driver);
+
         ProjectSettings projectSettings = new ProjectSettings(driver);
-        projectSettings.goToComponentPageProjectSettings();
+        projectSettings.goToComponentsPageWithProjectSettings();
 
         projectSettings.setComponentName(inputName);
         assertEquals(inputName, projectSettings.getTextFromComponentNameInput());
@@ -66,6 +67,15 @@ public class TestComponentsWithGlass {
         glassDocument.clickOnGlassDocMenuItem();
 
         assertTrue(projectSettings.isProjectExist(inputName), "The " + inputName + " is not presented in the component list");
+    }
+
+    @Test
+    void testCheckCreatedComponentBySideMenu() {
+        login.login();
+        ProjectSettings projectSettings = new ProjectSettings(driver);
+        projectSettings.goToTheProject();
+
+        projectSettings.gotToComponentsPageWithSideBar();
     }
 
     @ParameterizedTest

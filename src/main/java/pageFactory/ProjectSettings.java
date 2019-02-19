@@ -5,7 +5,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
@@ -46,6 +45,9 @@ public class ProjectSettings {
     @FindBys(@FindBy(xpath = ".//table[@id='components-table']/tbody[@class='items']/tr"))
     private List<WebElement> componentTableRows;
 
+    @FindBy(xpath = "//a[@data-link-id='com.atlassian.jira.jira-projects-plugin:components-page']")
+    private WebElement componentsSideMenuItem;
+
     By componentTablePath = By.xpath(".//table[@id='components-table']/tbody[@class='items']");
     By componentTableRowsPath = By.xpath(".//table[@id='components-table']/tbody[@class='items']/tr");
     By componentNamePathFromRow = By.xpath(".//td[@class='components-table__name']/div/a");
@@ -79,7 +81,7 @@ public class ProjectSettings {
         project.click();
     }
 
-    public void goToComponentPageProjectSettings() {
+    public void goToComponentsPageWithProjectSettings() {
         goToTheProject();
 
         waitForPageLoadComplete(driver, 1000);
@@ -91,6 +93,13 @@ public class ProjectSettings {
         projectSettingsMenuItem.click();
 
         wait.until(ExpectedConditions.elementToBeClickable(componentsAdminMenuItem)).click();
+    }
+
+    public void gotToComponentsPageWithSideBar() {
+        //TODO: 1. why are they working? Both waits are needed
+        waitForPageLoadComplete(driver, 1000);
+        wait.until(ExpectedConditions.elementToBeClickable(componentsSideMenuItem));
+        componentsSideMenuItem.click();
     }
 
     public void setComponentName(String componentName) {
