@@ -8,7 +8,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class GlassDocument {
 
@@ -52,7 +51,7 @@ public class GlassDocument {
     private List<WebElement> componentTableRows;
 
     @FindBy(xpath = "//a[@data-link-id='com.codecanvas.glass:glass']")
-    private WebElement glassDocMenuItemPath;
+    private WebElement glassDocMenuItem;
 
     By componentTablePath = By.xpath(".//table[@id='components-table']/tbody[@class='items']");
     By componentTableRowsPath = By.xpath(".//table[@id='components-table']/tbody[@class='items']/tr");
@@ -76,7 +75,7 @@ public class GlassDocument {
         wait = new WebDriverWait(driver, TIMEOUT, POLLING);
     }
 
-    public void goToComponentPageProjectSettings() {
+    public void goToTheProject() {
         wait.until(ExpectedConditions.elementToBeClickable(projectsMenuItem));
         projectsMenuItem.click();
 
@@ -85,13 +84,15 @@ public class GlassDocument {
 
         wait.until(ExpectedConditions.elementToBeClickable(project));
         project.click();
+    }
 
-        //TODO: sometimes can't be found
-        wait.until(ExpectedConditions.elementToBeClickable(projectSettingsMenuItem));
-        projectSettingsMenuItem.click();
+    public void goToComponentPageProjectSettings() {
+        goToTheProject();
 
-        wait.until(ExpectedConditions.elementToBeClickable(componentsAdminMenuItem));
-        componentsAdminMenuItem.click();
+        //TODO: sometimes can't be found and it stucked
+        wait.until(ExpectedConditions.elementToBeClickable(projectSettingsMenuItem)).click();
+
+        wait.until(ExpectedConditions.elementToBeClickable(componentsAdminMenuItem)).click();
     }
 
     public void setComponentName(String componentName) {
@@ -169,9 +170,12 @@ public class GlassDocument {
     }
 
     public void clickOnGlassDocMenuItem() {
-        wait.until(ExpectedConditions.elementToBeClickable(glassDocMenuItemPath));
-        glassDocMenuItemPath.click();
+        if (!glassDocMenuItem.isDisplayed()) {
+            goToTheProject();
+        }
 
+        wait.until(ExpectedConditions.elementToBeClickable(glassDocMenuItem));
+        glassDocMenuItem.click();
         checkAlert();
     }
 

@@ -25,7 +25,7 @@ public class TestComponentsWithGlass {
     }
 
     @Test
-    public void testGoToComponentsPageByProjectSettings() {
+    public void testCheckCreatedComponentProjectSettings() {
         String inputName = "Test Component";
         String inputAssigne1 = "Project default";
         //TODO: into csv
@@ -59,10 +59,13 @@ public class TestComponentsWithGlass {
 
         glassDocument.removeProject(inputName);
 
+        //Check component in Project's setting
         assertFalse(glassDocument.isProjectExist(inputName), "The component's name is listed in the component list!");*/
 
+        //Check component with Glass
         glassDocument.clickOnGlassDocMenuItem();
 
+        assertTrue(glassDocument.isProjectExist(inputName), "The " + inputName + " is not presented in the component list");
     }
 
     @ParameterizedTest
