@@ -47,6 +47,9 @@ public class TestComponentsWithGlass {
         assertTrue(glassDocument.getAssigneInputText().contains(inputAssigne1));
 
         glassDocument.clickOnAddComponent();
+        assertTrue(glassDocument.isProjectExist(inputName), "The component's name is not listed in the component list!");
+
+        glassDocument.removeProject(inputName);
 
     }
 

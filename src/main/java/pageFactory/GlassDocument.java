@@ -1,10 +1,6 @@
 package pageFactory;
 
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindAll;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.PageFactory;
@@ -51,8 +47,22 @@ public class GlassDocument {
     @FindBy(xpath = ".//form[@id='components-add__component']/div[@class='components-add__assignee']/*/input")
     private WebElement componentAssigneeInput;
 
-    @FindBys(@FindBy(xpath = ".//table[@id='components-table']/tbody[@class='items']"))
+    @FindBys(@FindBy(xpath = ".//table[@id='components-table']/tbody[@class='items']/tr"))
     private List<WebElement> componentTableRows;
+
+    By componentNamePathFromRow = By.xpath(".//td[@class='components-table__name']/div/a");
+    By dynamicTableMenuPathFromRow = By.xpath(".//td[@class='dynamic-table__actions']/div/a");
+
+
+    //dynamic: div id=component-actions-10011, a id=deletecomponent_10011
+    //By deleteButtonPath = By.xpath(".//div[starts-with(@id, 'component-actions-')]/ul/li/a[starts-with(@id, 'deletecomponent_')]");
+    //TODO: nem mukodik!!!!! By deleteButtonPath = By.xpath("//a[contains(@id, 'deletecomponent_')]");
+    By deleteButtonPath = By.linkText("Delete");
+    //By deleteButtonPath = By.cssSelector("a[id *= 'deletecomponent']");
+    //By deleteButtonPath = By.cssSelector("a:contains('deletecomponent')");
+
+    By submitButtonOnDeleteForm = By.xpath("//input[@id='submit']");
+
 
     public GlassDocument(WebDriver driver) {
         this.driver = driver;
@@ -103,10 +113,44 @@ public class GlassDocument {
         addComponentButton.click();
     }
 
+    public boolean isProjectExist(String projectName) {
+        try {
+            for (WebElement row : componentTableRows) {
+                if (row.findElement(componentNamePathFromRow).getText().equals(projectName))
+                    return true;
+            }
+        } catch (WebDriverException exception) {
+            return false;
+        }
+        return false;
+    }
+
+    public void removeProject(String projectName) {
+        for (WebElement row : componentTableRows) {
+            if (row.findElement(componentNamePathFromRow).getText().equals(projectName)) {
+                //click menu: td class=dynamic-table__actions/div/a
+                WebElement dynamicTableMenu = row.findElement(dynamicTableMenuPathFromRow);
+                dynamicTableMenu.click();
+                //dynamic: div id=component-actions-10011, a id=deletecomponent_10011
+                wait.until(ExpectedConditions.presenceOfElementLocated(deleteButtonPath));
+                WebElement deleteButton = driver.findElement(deleteButtonPath);
+                //highlighterMethod(deleteButton, driver);
+                //driver.switchTo().activeElement();
+                deleteButton.click();
+
+                //driver.switchTo().activeElement();
+                wait.until(ExpectedConditions.visibilityOfElementLocated(submitButtonOnDeleteForm));
+                //highlighterMethod(driver.findElement(submitButtonOnDeleteForm), driver);
+                driver.findElement(submitButtonOnDeleteForm).click();
+            }
+        }
+    }
+
     private void highlighterMethod(WebElement webElement, WebDriver webDriver) {
         JavascriptExecutor js = (JavascriptExecutor) webDriver;
         //js.executeScript("arguments[0].setAttribute('style', 'background: yellow; border: 2px solid red;');", webElement);
-        js.executeScript("arguments[0].setAttribute('style', 'color: red;');", webElement);
+        //js.executeScript("arguments[0].setAttribute('style', 'color: red;');", webElement);
+        js.executeScript("arguments[0].setAttribute('style', 'border: 2px solid red; border-color: red;');", webElement);
     }
 
 }
