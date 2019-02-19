@@ -5,14 +5,20 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
+
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class ComponentForm {
     private WebDriverWait wait;
-    private static final int TIMEOUT = 5;
-    private static final int POLLING = 100;
+    private static final int TIMEOUT = 10;
+    //private static final int POLLING = 100;
 
     private WebDriver driver;
 
@@ -48,24 +54,26 @@ public class ComponentForm {
     @FindBy(xpath = "//a[@data-link-id='com.atlassian.jira.jira-projects-plugin:components-page']")
     private WebElement componentsSideMenuItem;
 
-    By componentTablePath = By.xpath(".//table[@id='components-table']/tbody[@class='items']");
-    By componentTableRowsPath = By.xpath(".//table[@id='components-table']/tbody[@class='items']/tr");
-    By componentNamePathFromRow = By.xpath(".//td[@class='components-table__name']/div/a");
-    By dynamicTableMenuPathFromRow = By.xpath(".//td[@class='dynamic-table__actions']/div/a");
+    private By projectSettingsMenuPath = By.xpath("//a[@class='aui-button aui-button-subtle aui-sidebar-settings-button']");
+    private By componentTablePath = By.xpath(".//table[@id='components-table']/tbody[@class='items']");
+    private By componentTableRowsPath = By.xpath(".//table[@id='components-table']/tbody[@class='items']/tr");
+    private By componentNamePathFromRow = By.xpath(".//td[@class='components-table__name']/div/a");
+    private By dynamicTableMenuPathFromRow = By.xpath(".//td[@class='dynamic-table__actions']/div/a");
+    private By componentsSideMenuPath = By.xpath("//li[contains(@class,'aui-nav-selected')]//a[contains(@class,'aui-nav-item')]");
 
     //dynamic: div id=component-actions-10011, a id=deletecomponent_10011
     //By deleteButtonPath = By.xpath(".//div[starts-with(@id, 'component-actions-')]/ul/li/a[starts-with(@id, 'deletecomponent_')]");
     //TODO: not working!!!!! By deleteButtonPath = By.xpath("//a[contains(@id, 'deletecomponent_')]");
-    By deleteButtonPath = By.linkText("Delete");
+    private By deleteButtonPath = By.linkText("Delete");
     //By deleteButtonPath = By.cssSelector("a[id *= 'deletecomponent']");
     //By deleteButtonPath = By.cssSelector("a:contains('deletecomponent')");
 
-    By submitButtonOnDeleteForm = By.xpath("//input[@id='submit']");
+    private By submitButtonOnDeleteForm = By.xpath("//input[@id='submit']");
 
     public ComponentForm(WebDriver driver) {
         this.driver = driver;
-        PageFactory.initElements(driver, this);
-        wait = new WebDriverWait(driver, TIMEOUT, POLLING);
+        PageFactory.initElements(this.driver, this);
+        wait = new WebDriverWait(this.driver, TIMEOUT);//, POLLING);
         //wait = new WebDriverWait(driver, 20);
     }
 
@@ -84,22 +92,25 @@ public class ComponentForm {
     public void goToComponentsPageWithProjectSettings() {
         goToTheProject();
 
-        waitForPageLoadComplete(driver, 1000);
+        //waitForPageLoadComplete(driver, 1000);
 
-        //TODO: sometimes can't be found and it stucked
-        wait.until(ExpectedConditions.elementToBeClickable(projectSettingsMenuItem
-                .findElement(By.tagName("a"))));
 
+        //TODO: not working
+        //driver.manage().timeouts().pageLoadTimeout(5, SECONDS);
+        wait.until(ExpectedConditions.visibilityOf(projectSettingsMenuItem.findElement(By.tagName("a"))));
+        //wait.until(ExpectedConditions.presenceOfElementLocated(projectSettingsMenuPath)).click();
         projectSettingsMenuItem.click();
 
         wait.until(ExpectedConditions.elementToBeClickable(componentsAdminMenuItem)).click();
     }
 
     public void gotToComponentsPageWithSideBar() {
-        //TODO: 1. why are they working? Both waits are needed
-        waitForPageLoadComplete(driver, 1000);
-        wait.until(ExpectedConditions.elementToBeClickable(componentsSideMenuItem));
-        componentsSideMenuItem.click();
+        //TODO: not working
+        //waitForPageLoadComplete(driver, 10000);
+        //wait.until(ExpectedConditions.visibilityOf(componentsSideMenuItem));
+        wait.until(ExpectedConditions.visibilityOf(componentsSideMenuItem.findElement(By.xpath("..")))).click();
+        //wait.until(ExpectedConditions.presenceOfElementLocated(componentsSideMenuPath)).click();
+        //componentsSideMenuItem.click();
     }
 
     public void setComponentName(String componentName) {

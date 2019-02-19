@@ -42,10 +42,14 @@ public class TestComponentsWithGlass {
         componentForm.goToComponentsPageWithProjectSettings();
 
         componentForm.setComponentName(inputName);
-        assertEquals(inputName, componentForm.getTextFromComponentNameInput());
-
         componentForm.setAssigneeInput(inputAssigne1);
-        assertTrue(componentForm.getAssigneeInputText().contains(inputAssigne1));
+
+        assertAll("Test Component form input fields",
+                () -> assertEquals(inputName, componentForm.getTextFromComponentNameInput()),
+                () -> assertTrue(componentForm.getAssigneeInputText().contains(inputAssigne1))
+         );
+
+
 
         //TODO:Temp solution: If the test project is not exist
         if(!componentForm.isProjectExist(inputName)) componentForm.clickOnAddComponent();
@@ -66,17 +70,17 @@ public class TestComponentsWithGlass {
         //Check component with Glass
         glassDocument.clickOnGlassDocMenuItem();
 
-        assertTrue(componentForm.isProjectExist(inputName), "The " + inputName + " is not presented in the component list");
-    }
+        assertTrue(componentForm.isProjectExist(inputName), "The " + inputName
+                + " is not presented in the component list");
 
-    @Test
-    void testCheckCreatedComponentBySideMenu() {
-        login.login();
-        ComponentForm componentForm = new ComponentForm(driver);
+
         componentForm.goToTheProject();
-
         componentForm.gotToComponentsPageWithSideBar();
+
+        assertTrue(componentForm.isProjectExist(inputName), "The " + inputName
+                + " is not presented in the component list");
     }
+
 
     @ParameterizedTest
     @CsvFileSource(resources = "/input.csv")
