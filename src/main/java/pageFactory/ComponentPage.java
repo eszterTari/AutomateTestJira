@@ -47,7 +47,6 @@ public class ComponentPage {
         this.driver = driver;
         PageFactory.initElements(this.driver, this);
         wait = new WebDriverWait(this.driver, TIMEOUT);//, POLLING);
-        //wait = new WebDriverWait(driver, 20);
         navigateToPages = new NavigateToPages(this.driver);
     }
 
@@ -77,13 +76,6 @@ public class ComponentPage {
     public void clickOnAddComponent() {
         wait.until(ExpectedConditions.elementToBeClickable(addComponentButton));
         addComponentButton.click();
-
-        //TODO: instead of this
-        /*try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }*/
     }
 
     public boolean isComponentExist(String projectName) {

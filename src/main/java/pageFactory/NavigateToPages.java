@@ -20,9 +20,6 @@ public class NavigateToPages {
     @FindBy(id = "project_view_all_link_lnk")
     private WebElement viewAllProjects;
 
-    //@FindBy(xpath = ".//*[@original-title = 'Private Project 4']")
-    //private WebElement project;
-
     @FindBy(className = "aui-sidebar-footer")
     private WebElement projectSettingsMenuItem;
 
@@ -32,13 +29,13 @@ public class NavigateToPages {
     @FindBy(xpath = "//a[@data-link-id='com.codecanvas.glass:glass']")
     private WebElement glassDocMenuItem;
 
+
     public NavigateToPages(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(this.driver, this);
         wait = new WebDriverWait(this.driver, TIMEOUT);//, POLLING);
     }
 
-    //TODO: input any kind of project
     public void goToTheProject(String projectName) {
         wait.until(ExpectedConditions.elementToBeClickable(projectsMenuItem));
         projectsMenuItem.click();
@@ -59,7 +56,6 @@ public class NavigateToPages {
         //driver.manage().timeouts().pageLoadTimeout(5, SECONDS);
         wait.until(ExpectedConditions.visibilityOf(projectSettingsMenuItem.findElement(By.tagName("a"))));
         projectSettingsMenuItem.click();
-
     }
 
     public void goToComponentsPageWithSideBar() {
