@@ -70,7 +70,7 @@ public class TestComponentsWithGlass {
         assertFalse(glassDocumentPage.isComponentExist(inputName), "The component's name is listed in the component list!");*/
 
         /*** Check component with Glass ***/
-        navigateToPages.goToGlassDocPage(projectName);
+        navigateToPages.clickOnGlassDocumentNavItem();
 
         assertTrue(glassDocumentPage.isComponentExist(inputName), "The " + inputName
                 + " is not presented in the component list");
@@ -82,6 +82,27 @@ public class TestComponentsWithGlass {
 
         assertTrue(projectSettingsPage.isComponentExist(inputName), "The " + inputName
                 + " is not presented in the component list");
+    }
+
+    @Test
+    void testVerifyLoggedUserPermissions() {
+        String projectName = "Private Project 4";
+        String browseProject = "Browse Projects";
+        String createIssue = "Create Issues";
+        String editIssue = "Edit Issues";
+
+        login.loginWithDashboard("user6", System.getenv("password"));
+
+        navigateToPages.goToTheProject(projectName);
+        navigateToPages.clickOnGlassDocumentNavItem();
+        glassDocumentPage.clickOnPermissionNavItem();
+
+
+        assertAll("Test does user have permissions",
+                () -> assertTrue(glassDocumentPage.hasCurrentUserPermissionFor(browseProject)),
+                () -> assertTrue(glassDocumentPage.hasCurrentUserPermissionFor(createIssue)),
+                () -> assertTrue(glassDocumentPage.hasCurrentUserPermissionFor(editIssue))
+        );
     }
 
     //Sample code

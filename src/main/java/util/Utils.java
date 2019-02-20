@@ -76,7 +76,7 @@ public class Utils {
      * @param webElement
      * @param webDriver
      */
-    public void highlighter(WebElement webElement, WebDriver webDriver) {
+    public static void highlighter(WebElement webElement, WebDriver webDriver) {
         JavascriptExecutor js = (JavascriptExecutor) webDriver;
         js.executeScript("arguments[0].setAttribute('style', 'border: 2px solid red; border-color: red;');", webElement);
     }

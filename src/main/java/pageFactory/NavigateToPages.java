@@ -63,13 +63,8 @@ public class NavigateToPages {
         wait.until(ExpectedConditions.visibilityOf(componentsSideMenuItem.findElement(By.xpath("..")))).click();
     }
 
-    public void goToGlassDocPage(String projectName) {
-        if (!glassDocMenuItem.isDisplayed()) {
-            goToTheProject(projectName);
-        }
-
-        wait.until(ExpectedConditions.elementToBeClickable(glassDocMenuItem));
-        glassDocMenuItem.click();
+    public void clickOnGlassDocumentNavItem() {
+        wait.until(ExpectedConditions.elementToBeClickable(glassDocMenuItem)).click();
         Utils.acceptAlert(this.driver);
     }
 
