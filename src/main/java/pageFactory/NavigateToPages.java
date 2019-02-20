@@ -20,14 +20,11 @@ public class NavigateToPages {
     @FindBy(id = "project_view_all_link_lnk")
     private WebElement viewAllProjects;
 
-    @FindBy(xpath = ".//*[@original-title = 'Private Project 4']")
-    private WebElement project;
+    //@FindBy(xpath = ".//*[@original-title = 'Private Project 4']")
+    //private WebElement project;
 
     @FindBy(className = "aui-sidebar-footer")
-    //@FindBy(xpath = "//div[@class='aui-sidebar-footer']/a[@data-tooltip='Project settings']")
-    //@FindBy(xpath = "//div[@class='aui-sidebar-footer']/a[@href='/plugins/servlet/project-config/PP4']")
     private WebElement projectSettingsMenuItem;
-
 
     @FindBy(xpath = "//a[@data-link-id='com.atlassian.jira.jira-projects-plugin:components-page']")
     private WebElement componentsSideMenuItem;
@@ -39,52 +36,48 @@ public class NavigateToPages {
         this.driver = driver;
         PageFactory.initElements(this.driver, this);
         wait = new WebDriverWait(this.driver, TIMEOUT);//, POLLING);
-        //wait = new WebDriverWait(driver, 20);
     }
 
-    private By projectSettingsMenuPath = By.xpath("//a[@class='aui-button aui-button-subtle aui-sidebar-settings-button']");
-    private By componentsSideMenuPath = By.xpath("//li[contains(@class,'aui-nav-selected')]//a[contains(@class,'aui-nav-item')]");
-
     //TODO: input any kind of project
-    public void goToTheProject() {
+    public void goToTheProject(String projectName) {
         wait.until(ExpectedConditions.elementToBeClickable(projectsMenuItem));
         projectsMenuItem.click();
 
         wait.until(ExpectedConditions.elementToBeClickable(viewAllProjects));
         viewAllProjects.click();
 
+        WebElement project = this.driver.findElement(By.xpath(getProjectXPath(projectName)));
         wait.until(ExpectedConditions.elementToBeClickable(project));
         project.click();
     }
 
-    public void goToProjectSettingsPage() {
-        goToTheProject();
+    public void goToProjectSettingsPage(String projectName) {
+        goToTheProject(projectName);
 
-        //TODO: not working
+        //TODO: not working all the time
         //waitForPageLoadComplete(driver, 1000);
         //driver.manage().timeouts().pageLoadTimeout(5, SECONDS);
         wait.until(ExpectedConditions.visibilityOf(projectSettingsMenuItem.findElement(By.tagName("a"))));
-        //wait.until(ExpectedConditions.presenceOfElementLocated(projectSettingsMenuPath)).click();
         projectSettingsMenuItem.click();
 
     }
 
     public void goToComponentsPageWithSideBar() {
-        //TODO: not working
-        //waitForPageLoadComplete(driver, 10000);
-        //wait.until(ExpectedConditions.visibilityOf(componentsSideMenuItem));
+        //TODO: not working all the time
         wait.until(ExpectedConditions.visibilityOf(componentsSideMenuItem.findElement(By.xpath("..")))).click();
-        //wait.until(ExpectedConditions.presenceOfElementLocated(componentsSideMenuPath)).click();
-        //componentsSideMenuItem.click();
     }
 
-    public void goToGlassDocPage() {
+    public void goToGlassDocPage(String projectName) {
         if (!glassDocMenuItem.isDisplayed()) {
-            goToTheProject();
+            goToTheProject(projectName);
         }
 
         wait.until(ExpectedConditions.elementToBeClickable(glassDocMenuItem));
         glassDocMenuItem.click();
         Utils.acceptAlert(this.driver);
+    }
+
+    private String getProjectXPath(String projectName) {
+        return ".//*[@original-title = '" + projectName + "']";
     }
 }

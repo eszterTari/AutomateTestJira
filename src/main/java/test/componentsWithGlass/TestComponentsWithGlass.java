@@ -31,6 +31,7 @@ public class TestComponentsWithGlass {
 
     @Test
     public void testCheckCreatedComponent() {
+        String projectName = "Private Project 4";
         String inputName = "Test Component";
         String inputAssigne1 = "Project default";
         //TODO: into csv
@@ -40,7 +41,7 @@ public class TestComponentsWithGlass {
 
         login.login();
 
-        navigateToPages.goToProjectSettingsPage();
+        navigateToPages.goToProjectSettingsPage(projectName);
         navigateToPages.goToComponentsPageWithSideBar();
 
         projectSettingsPage.setComponentNameInput(inputName);
@@ -69,21 +70,21 @@ public class TestComponentsWithGlass {
         assertFalse(glassDocumentPage.isComponentExist(inputName), "The component's name is listed in the component list!");*/
 
         /*** Check component with Glass ***/
-        navigateToPages.goToGlassDocPage();
+        navigateToPages.goToGlassDocPage(projectName);
 
         assertTrue(glassDocumentPage.isComponentExist(inputName), "The " + inputName
                 + " is not presented in the component list");
 
 
         /*** Check component via component sidebar menu in Project Settings ***/
-        navigateToPages.goToTheProject();
+        navigateToPages.goToTheProject(projectName);
         navigateToPages.goToComponentsPageWithSideBar();
 
         assertTrue(projectSettingsPage.isComponentExist(inputName), "The " + inputName
                 + " is not presented in the component list");
     }
 
-
+    //Sample code
     @ParameterizedTest
     @CsvFileSource(resources = "/input.csv")
     void testHelloCsv(String a, String b) {
