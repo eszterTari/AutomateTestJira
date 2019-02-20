@@ -7,8 +7,9 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import util.Utils;
 
-public class NavigateToPage {
+public class NavigateToPages {
     private WebDriver driver;
     private WebDriverWait wait;
     private static final int TIMEOUT = 10;
@@ -33,7 +34,10 @@ public class NavigateToPage {
     @FindBy(xpath = "//a[@data-link-id='com.atlassian.jira.jira-projects-plugin:components-page']")
     private WebElement componentsSideMenuItem;
 
-    public NavigateToPage(WebDriver driver) {
+    @FindBy(xpath = "//a[@data-link-id='com.codecanvas.glass:glass']")
+    private WebElement glassDocMenuItem;
+
+    public NavigateToPages(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(this.driver, this);
         wait = new WebDriverWait(this.driver, TIMEOUT);//, POLLING);
@@ -75,5 +79,15 @@ public class NavigateToPage {
         wait.until(ExpectedConditions.visibilityOf(componentsSideMenuItem.findElement(By.xpath("..")))).click();
         //wait.until(ExpectedConditions.presenceOfElementLocated(componentsSideMenuPath)).click();
         //componentsSideMenuItem.click();
+    }
+
+    public void gotToGlassDocPage() {
+        if (!glassDocMenuItem.isDisplayed()) {
+            goToTheProject();
+        }
+
+        wait.until(ExpectedConditions.elementToBeClickable(glassDocMenuItem));
+        glassDocMenuItem.click();
+        Utils.checkAlert(this.driver);
     }
 }

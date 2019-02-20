@@ -6,10 +6,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import org.openqa.selenium.WebDriver;
-import pageFactory.ComponentForm;
-import pageFactory.GlassDocument;
+import pageFactory.ComponentPage;
+import pageFactory.GlassDocumentPage;
 import pageFactory.Login;
-import pageFactory.NavigateToPage;
+import pageFactory.NavigateToPages;
 import util.RunEnvironment;
 import util.Utils;
 
@@ -18,14 +18,14 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TestComponentsWithGlass {
     private WebDriver driver;
     private Login login;
-    private NavigateToPage navigateToPage;
+    private NavigateToPages navigateToPages;
 
     @BeforeEach
     public void setup() {
         Utils.setup();
         this.driver = RunEnvironment.getWebDriver();
         login = new Login(this.driver);
-        navigateToPage = new NavigateToPage(this.driver);
+        navigateToPages = new NavigateToPages(this.driver);
     }
 
     @Test
@@ -39,48 +39,49 @@ public class TestComponentsWithGlass {
 
         login.login();
 
-        GlassDocument glassDocument = new GlassDocument(driver);
+        GlassDocumentPage glassDocumentPage = new GlassDocumentPage(driver);
 
-        ComponentForm componentForm = new ComponentForm(driver);
-        navigateToPage.goToComponentsPageWithProjectSettings();
+        ComponentPage componentPage = new ComponentPage(driver);
+        navigateToPages.goToComponentsPageWithProjectSettings();
 
-        componentForm.setComponentName(inputName);
-        componentForm.setAssigneeInput(inputAssigne1);
+        componentPage.setComponentName(inputName);
+        componentPage.setAssigneeInput(inputAssigne1);
 
         assertAll("Test Component form input fields",
-                () -> assertEquals(inputName, componentForm.getTextFromComponentNameInput()),
-                () -> assertTrue(componentForm.getAssigneeInputText().contains(inputAssigne1))
+                () -> assertEquals(inputName, componentPage.getTextFromComponentNameInput()),
+                () -> assertTrue(componentPage.getAssigneeInputText().contains(inputAssigne1))
          );
 
 
 
         //TODO:Temp solution: If the test project is not exist
-        if(!componentForm.isProjectExist(inputName)) componentForm.clickOnAddComponent();
+        if(!componentPage.isProjectExist(inputName)) componentPage.clickOnAddComponent();
         else {
-            componentForm.setComponentName("");
-            componentForm.setAssigneeInput("");
+            componentPage.setComponentName("");
+            componentPage.setAssigneeInput("");
         }
 
         //TODO: timing!!!!
-        /*glassDocument.clickOnAddComponent();
-        assertTrue(glassDocument.isProjectExist(inputName), "The component's name is not listed in the component list!");
+        /*glassDocumentPage.clickOnAddComponent();
+        assertTrue(glassDocumentPage.isProjectExist(inputName), "The component's name is not listed in the component list!");
 
-        glassDocument.removeProject(inputName);
+        glassDocumentPage.removeProject(inputName);
 
         //Check component in Project's setting
-        assertFalse(glassDocument.isProjectExist(inputName), "The component's name is listed in the component list!");*/
+        assertFalse(glassDocumentPage.isProjectExist(inputName), "The component's name is listed in the component list!");*/
 
         //Check component with Glass
-        glassDocument.clickOnGlassDocMenuItem();
+        navigateToPages.gotToGlassDocPage();
 
-        assertTrue(componentForm.isProjectExist(inputName), "The " + inputName
+        assertTrue(componentPage.isProjectExist(inputName), "The " + inputName
                 + " is not presented in the component list");
 
 
-        navigateToPage.goToTheProject();
-        navigateToPage.gotToComponentsPageWithSideBar();
+        //check component with component side bar
+        navigateToPages.goToTheProject();
+        navigateToPages.gotToComponentsPageWithSideBar();
 
-        assertTrue(componentForm.isProjectExist(inputName), "The " + inputName
+        assertTrue(componentPage.isProjectExist(inputName), "The " + inputName
                 + " is not presented in the component list");
     }
 

@@ -5,20 +5,14 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.FluentWait;
-import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
 
-import static java.util.concurrent.TimeUnit.SECONDS;
-
-public class ComponentForm {
+public class ComponentPage {
     private WebDriver driver;
     private WebDriverWait wait;
-    private NavigateToPage navigateToPage;
+    private NavigateToPages navigateToPages;
 
     private static final int TIMEOUT = 10;
     //private static final int POLLING = 100;
@@ -50,12 +44,12 @@ public class ComponentForm {
 
     private By submitButtonOnDeleteForm = By.xpath("//input[@id='submit']");
 
-    public ComponentForm(WebDriver driver) {
+    public ComponentPage(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(this.driver, this);
         wait = new WebDriverWait(this.driver, TIMEOUT);//, POLLING);
         //wait = new WebDriverWait(driver, 20);
-        navigateToPage = new NavigateToPage(this.driver);
+        navigateToPages = new NavigateToPages(this.driver);
     }
 
     public void setComponentName(String componentName) {
