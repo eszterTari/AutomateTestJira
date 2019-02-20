@@ -9,6 +9,7 @@ import org.openqa.selenium.WebDriver;
 import pageFactory.ComponentForm;
 import pageFactory.GlassDocument;
 import pageFactory.Login;
+import pageFactory.NavigateToPage;
 import util.RunEnvironment;
 import util.Utils;
 
@@ -17,12 +18,14 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TestComponentsWithGlass {
     private WebDriver driver;
     private Login login;
+    private NavigateToPage navigateToPage;
 
     @BeforeEach
     public void setup() {
         Utils.setup();
-        driver = RunEnvironment.getWebDriver();
-        login = new Login(driver);
+        this.driver = RunEnvironment.getWebDriver();
+        login = new Login(this.driver);
+        navigateToPage = new NavigateToPage(this.driver);
     }
 
     @Test
@@ -39,7 +42,7 @@ public class TestComponentsWithGlass {
         GlassDocument glassDocument = new GlassDocument(driver);
 
         ComponentForm componentForm = new ComponentForm(driver);
-        componentForm.goToComponentsPageWithProjectSettings();
+        navigateToPage.goToComponentsPageWithProjectSettings();
 
         componentForm.setComponentName(inputName);
         componentForm.setAssigneeInput(inputAssigne1);
@@ -74,8 +77,8 @@ public class TestComponentsWithGlass {
                 + " is not presented in the component list");
 
 
-        componentForm.goToTheProject();
-        componentForm.gotToComponentsPageWithSideBar();
+        navigateToPage.goToTheProject();
+        navigateToPage.gotToComponentsPageWithSideBar();
 
         assertTrue(componentForm.isProjectExist(inputName), "The " + inputName
                 + " is not presented in the component list");
