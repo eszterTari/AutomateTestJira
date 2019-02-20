@@ -15,6 +15,7 @@ public class GlassDocumentPage {
     private WebDriver driver;
     private WebDriverWait wait;
     private NavigateToPages navigateToPages;
+    private ComponentPage componentPage;
 
     private static final int TIMEOUT = 5;
     private static final int POLLING = 100;
@@ -25,15 +26,11 @@ public class GlassDocumentPage {
         PageFactory.initElements(this.driver, this);
         wait = new WebDriverWait(this.driver, TIMEOUT, POLLING);
         navigateToPages = new NavigateToPages(this.driver);
+        componentPage = new ComponentPage(this.driver);
     }
 
-
-
-    private void highlighterMethod(WebElement webElement, WebDriver webDriver) {
-        JavascriptExecutor js = (JavascriptExecutor) webDriver;
-        //js.executeScript("arguments[0].setAttribute('style', 'background: yellow; border: 2px solid red;');", webElement);
-        //js.executeScript("arguments[0].setAttribute('style', 'color: red;');", webElement);
-        js.executeScript("arguments[0].setAttribute('style', 'border: 2px solid red; border-color: red;');", webElement);
+    /** Component Form **/
+    public boolean isComponentExist(String componentName) {
+        return componentPage.isComponentExist(componentName);
     }
-
 }

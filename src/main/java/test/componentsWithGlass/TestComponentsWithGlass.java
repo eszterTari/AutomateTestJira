@@ -17,6 +17,7 @@ public class TestComponentsWithGlass {
     private Login login;
     private NavigateToPages navigateToPages;
     private ProjectSettingsPage projectSettingsPage;
+    private GlassDocumentPage glassDocumentPage;
 
     @BeforeEach
     public void setup() {
@@ -25,10 +26,11 @@ public class TestComponentsWithGlass {
         login = new Login(this.driver);
         navigateToPages = new NavigateToPages(this.driver);
         projectSettingsPage = new ProjectSettingsPage(this.driver);
+        glassDocumentPage = new GlassDocumentPage(this.driver);
     }
 
     @Test
-    public void testCheckCreatedComponentByProjectSettings() {
+    public void testCheckCreatedComponent() {
         String inputName = "Test Component";
         String inputAssigne1 = "Project default";
         //TODO: into csv
@@ -38,22 +40,16 @@ public class TestComponentsWithGlass {
 
         login.login();
 
-        //GlassDocumentPage glassDocumentPage = new GlassDocumentPage(driver);
-
-        //ComponentPage componentPage = new ComponentPage(driver);
         navigateToPages.goToProjectSettingsPage();
         navigateToPages.goToComponentsPageWithSideBar();
 
         projectSettingsPage.setComponentNameInput(inputName);
         projectSettingsPage.setComponentAssigneeInput(inputAssigne1);
 
-
         assertAll("Test Component form input fields",
                 () -> assertEquals(inputName, projectSettingsPage.getTextFromComponentNameInput()),
                 () -> assertTrue(projectSettingsPage.getAssigneeInputText().contains(inputAssigne1))
          );
-
-
 
         //TODO:Temp solution: If the test project is not exist
         if(!projectSettingsPage.isComponentExist(inputName))
@@ -63,7 +59,7 @@ public class TestComponentsWithGlass {
             projectSettingsPage.setComponentAssigneeInput("");
         }
 
-        //TODO: timing!!!!
+        //TODO: timing!!!! How to create and remove
         /*glassDocumentPage.clickOnAddComponent();
         assertTrue(glassDocumentPage.isComponentExist(inputName), "The component's name is not listed in the component list!");
 
@@ -72,14 +68,14 @@ public class TestComponentsWithGlass {
         //Check component in Project's setting
         assertFalse(glassDocumentPage.isComponentExist(inputName), "The component's name is listed in the component list!");*/
 
-        //Check component with Glass
+        /*** Check component with Glass ***/
         navigateToPages.goToGlassDocPage();
 
-        assertTrue(projectSettingsPage.isComponentExist(inputName), "The " + inputName
+        assertTrue(glassDocumentPage.isComponentExist(inputName), "The " + inputName
                 + " is not presented in the component list");
 
 
-        //Check component with component sidebar menu
+        /*** Check component via component sidebar menu in Project Settings ***/
         navigateToPages.goToTheProject();
         navigateToPages.goToComponentsPageWithSideBar();
 
