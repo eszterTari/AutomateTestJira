@@ -28,8 +28,6 @@ public class NavigateToPages {
     //@FindBy(xpath = "//div[@class='aui-sidebar-footer']/a[@href='/plugins/servlet/project-config/PP4']")
     private WebElement projectSettingsMenuItem;
 
-    @FindBy(id = "administer_project_components")
-    private WebElement componentsAdminMenuItem;
 
     @FindBy(xpath = "//a[@data-link-id='com.atlassian.jira.jira-projects-plugin:components-page']")
     private WebElement componentsSideMenuItem;
@@ -59,7 +57,7 @@ public class NavigateToPages {
         project.click();
     }
 
-    public void goToComponentsPageWithProjectSettings() {
+    public void goToProjectSettingsPage() {
         goToTheProject();
 
         //TODO: not working
@@ -69,10 +67,9 @@ public class NavigateToPages {
         //wait.until(ExpectedConditions.presenceOfElementLocated(projectSettingsMenuPath)).click();
         projectSettingsMenuItem.click();
 
-        wait.until(ExpectedConditions.elementToBeClickable(componentsAdminMenuItem)).click();
     }
 
-    public void gotToComponentsPageWithSideBar() {
+    public void goToComponentsPageWithSideBar() {
         //TODO: not working
         //waitForPageLoadComplete(driver, 10000);
         //wait.until(ExpectedConditions.visibilityOf(componentsSideMenuItem));
@@ -81,7 +78,7 @@ public class NavigateToPages {
         //componentsSideMenuItem.click();
     }
 
-    public void gotToGlassDocPage() {
+    public void goToGlassDocPage() {
         if (!glassDocMenuItem.isDisplayed()) {
             goToTheProject();
         }

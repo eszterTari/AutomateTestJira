@@ -29,7 +29,6 @@ public class ComponentPage {
     @FindBys(@FindBy(xpath = ".//table[@id='components-table']/tbody[@class='items']/tr"))
     private List<WebElement> componentTableRows;
 
-
     private By componentTablePath = By.xpath(".//table[@id='components-table']/tbody[@class='items']");
     private By componentTableRowsPath = By.xpath(".//table[@id='components-table']/tbody[@class='items']/tr");
     private By componentNamePathFromRow = By.xpath(".//td[@class='components-table__name']/div/a");
@@ -53,9 +52,9 @@ public class ComponentPage {
     }
 
     public void setComponentName(String componentName) {
-        wait.until(ExpectedConditions.elementToBeClickable(componentNameInput));
+        wait.until(ExpectedConditions.visibilityOf(componentNameInput));
         componentNameInput.sendKeys(componentName);
-        //wait.until(ExpectedConditions.textToBePresentInElementValue(componentNameInput, componentName));
+        wait.until(ExpectedConditions.textToBePresentInElementValue(componentNameInput, componentName));
     }
 
     public String getTextFromComponentNameInput() {
@@ -87,7 +86,7 @@ public class ComponentPage {
         }*/
     }
 
-    public boolean isProjectExist(String projectName) {
+    public boolean isComponentExist(String projectName) {
 
 /*        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(componentTablePath));
         //wait until all rows are in item-state-ready, after adding itsstate is item-state-successful

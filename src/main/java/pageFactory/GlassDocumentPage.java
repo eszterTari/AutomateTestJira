@@ -20,11 +20,6 @@ public class GlassDocumentPage {
     private static final int POLLING = 100;
 
 
-    @FindBy(xpath = "//a[@data-link-id='com.codecanvas.glass:glass']")
-    private WebElement glassDocMenuItem;
-
-
-
     public GlassDocumentPage(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(this.driver, this);
