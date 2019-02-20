@@ -1,5 +1,6 @@
 package pageFactory;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -42,6 +43,12 @@ public class BrowseProjects {
     @FindBy(className = "subnavigator-title")
     WebElement subNavigatorTitle;
 
+    @FindBy(id = "project-filter-text")
+    WebElement searchBar;
+
+    @FindBy(className = "projects-list")
+    WebElement listedProjectsTable;
+
     List<String> projectNamesOfRequirements = new ArrayList<>(Arrays.asList("COALA", "JETI", "TOUCAN"));
 
     public BrowseProjects(WebDriver driver) {
@@ -83,11 +90,28 @@ public class BrowseProjects {
     public boolean navigateToRequiredProjectsReports() {
         for (String projectName : projectNamesOfRequirements) {
             driver.get("https://jira.codecool.codecanvas.hu/projects/" + projectName + "?selectedItem=com.atlassian.jira.jira-projects-plugin:report-page");
-            wait.until(ExpectedConditions.elementToBeClickable(reportsSideBarMenuPoint));
-            reportsSideBarMenuPoint.click();
             String subNavigatorTitleText = subNavigatorTitle.getText();
             if (!subNavigatorTitleText.equals("All reports")) {
                 return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean useSearchBarToFindAProject(String searchWord) throws InterruptedException {
+        driver.get("https://jira.codecool.codecanvas.hu/secure/BrowseProjects.jspa?selectedCategory=all&selectedProjectType=all");
+        wait.until(ExpectedConditions.elementToBeClickable(searchBar));
+        searchBar.click();
+        searchBar.sendKeys(searchWord);
+        wait.until(ExpectedConditions.visibilityOf(listedProjectsTable));
+        Thread.sleep(1000);
+        wait.until(ExpectedConditions.visibilityOfAllElements(listedProjectsTable.findElements(By.xpath("./tr"))));
+        List<WebElement> rows = listedProjectsTable.findElements(By.xpath("./tr"));
+        for (WebElement row : rows) {
+            for (WebElement elem : row.findElements(By.xpath(".//td[1]"))) {
+                if (!elem.getText().toLowerCase().contains(searchWord)) {
+                    return false;
+                }
             }
         }
         return true;

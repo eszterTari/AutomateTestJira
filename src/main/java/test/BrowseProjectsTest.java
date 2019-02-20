@@ -44,6 +44,11 @@ public class BrowseProjectsTest {
         assertEquals(true, browseProjects.navigateToRequiredProjectsReports());
     }
 
+    @Test
+    public void useSearchBarToFindAProject_test() throws InterruptedException {
+        assertEquals(true, browseProjects.useSearchBarToFindAProject("testing"));
+    }
+
     @AfterEach
     public void tearDown() {
         Utils.tearDown();
