@@ -1,6 +1,12 @@
 package util;
 
 import org.apache.commons.exec.OS;
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class Utils {
 
@@ -48,5 +54,30 @@ public class Utils {
         } else {
             EnvironmentManagerWin.shutDownDriver();
         }
+    }
+
+    /**
+     * If an alert appears, it accepts.
+     * @param driver
+     */
+    public static void acceptAlert(WebDriver driver) {
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, 2);
+            wait.until(ExpectedConditions.alertIsPresent());
+            Alert alert = driver.switchTo().alert();
+            alert.accept();
+        } catch (Exception e) {
+            //exception handling
+        }
+    }
+
+    /**
+     * Highlights the webelement
+     * @param webElement
+     * @param webDriver
+     */
+    public static void highlighter(WebElement webElement, WebDriver webDriver) {
+        JavascriptExecutor js = (JavascriptExecutor) webDriver;
+        js.executeScript("arguments[0].setAttribute('style', 'border: 2px solid red; border-color: red;');", webElement);
     }
 }
