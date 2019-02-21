@@ -15,7 +15,6 @@ public class ComponentPage {
     private NavigateToPages navigateToPages;
 
     private static final int TIMEOUT = 10;
-    //private static final int POLLING = 100;
 
     @FindBy(xpath = ".//form[@id='components-add__component']/div[@class='components-add__confirm']/button")
     private WebElement addComponentButton;
@@ -34,12 +33,7 @@ public class ComponentPage {
     private By componentNamePathFromRow = By.xpath(".//td[@class='components-table__name']/div/a");
     private By dynamicTableMenuPathFromRow = By.xpath(".//td[@class='dynamic-table__actions']/div/a");
 
-    //dynamic: div id=component-actions-10011, a id=deletecomponent_10011
-    //By deleteButtonPath = By.xpath(".//div[starts-with(@id, 'component-actions-')]/ul/li/a[starts-with(@id, 'deletecomponent_')]");
-    //TODO: Contains() not working!!!!! By deleteButtonPath = By.xpath("//a[contains(@id, 'deletecomponent_')]");
     private By deleteButtonPath = By.linkText("Delete");
-    //By deleteButtonPath = By.cssSelector("a[id *= 'deletecomponent']");
-    //By deleteButtonPath = By.cssSelector("a:contains('deletecomponent')");
 
     private By submitButtonOnDeleteForm = By.xpath("//input[@id='submit']");
 
@@ -80,12 +74,6 @@ public class ComponentPage {
 
     public boolean isComponentExist(String projectName) {
 
-/*        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(componentTablePath));
-        //wait until all rows are in item-state-ready, after adding itsstate is item-state-successful
-        for (WebElement row : componentTableRows) {
-            wait.until(ExpectedConditions.attributeContains(row, "class", "item-state-ready"));
-        }*/
-
         try {
             for (WebElement row : componentTableRows) {
                 if (row.findElement(componentNamePathFromRow).getText().equals(projectName))
@@ -99,9 +87,9 @@ public class ComponentPage {
 
     public void removeProject(String projectName) {
         //wait until all rows are in item-state-ready, after adding itsstate is item-state-successful
-/*        for (WebElement row : componentTableRows) {
+        for (WebElement row : componentTableRows) {
             wait.until(ExpectedConditions.attributeContains(row, "class", "item-state-ready"));
-        }*/
+        }
 
 
         for (WebElement row : componentTableRows) {
