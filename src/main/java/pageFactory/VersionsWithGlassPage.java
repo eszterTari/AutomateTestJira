@@ -4,20 +4,24 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Wait;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
 
 public class VersionsWithGlassPage {
 
     WebDriver driver;
+    Wait wait;
     String releasesPageOfAProject = "https://jira.codecool.codecanvas.hu/projects/PP5?selectedItem=com.atlassian.jira.jira-projects-plugin:release-page&status=no-filter";
     String glassPageOfAProject = "https://jira.codecool.codecanvas.hu/projects/PP5?selectedItem=com.codecanvas.glass:glass";
 
-    @FindBy( xpath = "/html/body/div[1]/section/div[1]/div/div[1]/nav/div/div[2]/ul/li[3]/a/span[2]")
-    WebElement releasesButtonInLeftPane;
-
     @FindBy( className = "versions-table__name" )
     List<WebElement> allVersionsOfAProject;
+
+    @FindBy( xpath = "//*[@id=\"versions-table\"]/tbody[2]/tr[1]/td[1]/div/a" )
+    WebElement linkOfAVersion;
 
     @FindBy( id = "aui-uid-2" )
     WebElement versionsTabInGlass;
@@ -31,8 +35,12 @@ public class VersionsWithGlassPage {
     @FindBy( xpath = "//*[@id=\"releases-add__version\"]/div[5]/button")
     WebElement buttonToAddNewVersion;
 
+    @FindBy( xpath = "//*[@id=\"release-report\"]/header/div/div[1]/h2" )
+    WebElement versionHeader;
+
     public VersionsWithGlassPage(WebDriver driver) {
         this.driver = driver;
+        wait = new WebDriverWait(driver, 3000);
         PageFactory.initElements(driver, this);
     }
 
@@ -54,6 +62,18 @@ public class VersionsWithGlassPage {
         descriptionFieldForNewVersion.sendKeys("This is a version number for testing purposes only and can be deleted.");
         buttonToAddNewVersion.click();
         return newlyCreatedVersionNumber;
+    }
+
+    public String selectVersion() {
+        driver.get(glassPageOfAProject);
+        versionsTabInGlass.click();
+        System.out.println(allVersionsOfAProject.size());
+        if(allVersionsOfAProject.size() > 1) {
+            linkOfAVersion.click();
+        }
+        driver.switchTo().frame(1);
+        wait.until(ExpectedConditions.textToBePresentInElementValue(versionHeader, "Version "));
+        return versionHeader.getText();
     }
 }
 

@@ -1,5 +1,6 @@
 package test;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,7 @@ import util.Utils;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestVersionsWithGlass {
 
@@ -33,26 +35,32 @@ public class TestVersionsWithGlass {
 
     @Disabled
     @Test
-    public void versions() {
+    public void listVersions() {
         assertEquals(versionsWithGlassPage.getAllVersionsOfAProject().size(), versionsWithGlassPage.getAllVersionsInGlass().size());
     }
 
+    @Disabled
     @Test
     public void createdVersionExists() {
         String newlyCreatedVersionNumber = versionsWithGlassPage.createNewVersion();
         List<WebElement> versions = versionsWithGlassPage.getAllVersionsInGlass();
         for(WebElement version: versions) {
             if(version.getText().equals(newlyCreatedVersionNumber)) {
-                assert(true);
+                assertTrue(true);
             }
         }
     }
 
-    @Disabled
     @Test
     public void selectVersion() {
-
+        System.out.println(versionsWithGlassPage.selectVersion());
+        assertTrue(versionsWithGlassPage.selectVersion().contains("Version "));
     }
 
+    @AfterEach
+    public void tearDown() throws InterruptedException {
+        driver.wait(5000);
+        Utils.tearDown();
+    }
 
 }
