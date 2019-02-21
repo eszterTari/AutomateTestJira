@@ -21,7 +21,7 @@ public class TestBrowseIssues {
         driver.manage().window().maximize();
         login = new Login(driver);
         browseIssues = new Browse_Issues(driver);
-        login.loginWithDashboard();
+        login.login();
     }
 
     //@Disabled
