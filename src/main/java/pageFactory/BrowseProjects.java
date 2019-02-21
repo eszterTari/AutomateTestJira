@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -45,6 +46,17 @@ public class BrowseProjects {
 
     @FindBy(className = "projects-list")
     WebElement listedProjectsTable;
+
+    @FindBy(xpath = "//*[@id=\"filter-projects\"]/div/h2")
+    WebElement titleOfProjectFiltersPage;
+
+    @FindBys(@FindBy(xpath = "//div[contains(@id,'browse-projects-sidebar')]//div[contains(@class,'category-nav')]" +
+            "//ul[contains(@class, 'aui-nav')]" + "//li/a"))
+    List<WebElement> projectCategoriesSideBar;
+
+    @FindBys(@FindBy(xpath = "//div[contains(@id,'browse-projects-sidebar')]//div[contains(@class,'project-type-nav')]" +
+            "//ul[contains(@class, 'project-types-filters')]" + "//li"))
+    List<WebElement> projectTypesSideBar;
 
     List<String> projectNamesOfRequirements = new ArrayList<>(Arrays.asList("COALA", "JETI", "TOUCAN"));
 
@@ -114,4 +126,30 @@ public class BrowseProjects {
         return true;
     }
 
+    public boolean filterByProjectTypes() {
+        return clickOnEveryOptionInSideBar(projectTypesSideBar, titleOfProjectFiltersPage);
+    }
+
+    public boolean filterByProjectCategories() {
+        return clickOnEveryOptionInSideBar(projectCategoriesSideBar, titleOfProjectFiltersPage);
+    }
+
+    public boolean clickOnEveryOptionInSideBar(List<WebElement> sideBar, WebElement titleOfFilteredPage) {
+        driver.get("https://jira.codecool.codecanvas.hu/secure/BrowseProjects.jspa?selectedCategory=all&selectedProjectType=all");
+        wait.until(ExpectedConditions.visibilityOfAllElements(sideBar));
+        List<String> ids = new ArrayList<>();
+        for (WebElement optionOfSidebar : sideBar) {
+            ids.add(optionOfSidebar.getAttribute("id"));
+        }
+        for (String id : ids) {
+            WebElement optionInSideBar = driver.findElement(By.id(id));
+            wait.until(ExpectedConditions.elementToBeClickable(optionInSideBar));
+            String optionInSideBarText = optionInSideBar.getText().toLowerCase();
+            optionInSideBar.click();
+            if (!titleOfFilteredPage.getText().toLowerCase().contains(optionInSideBarText)) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
