@@ -50,11 +50,7 @@ public class Login {
     }
 
     public boolean isLoggedIn() {
-        if (userOptions.getText().equals("Log In")) {
-            return false;
-        }else {
-            return true;
-        }
+        return !userOptions.getText().equals("Log In");
     }
 
     public void loginWithDashboard(String username, String password) {

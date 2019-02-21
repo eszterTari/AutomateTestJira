@@ -54,11 +54,7 @@ public class Browse_Issues {
     }
 
     public Boolean isIssuesSearchBtnVisible(){
-        if (searchBtnToValidateIssuesPage.isDisplayed()) {
-            return true;
-        } else {
-            return false;
-        }
+        return searchBtnToValidateIssuesPage.isDisplayed();
     }
 
     public String getProjectNameValue(){
@@ -78,11 +74,7 @@ public class Browse_Issues {
     }
 
     public Boolean isMinimumNumberOfIssuesArePresent(int minimumIssueNumber){
-        if (getNumbersOfIssues() >= minimumIssueNumber) {
-            return true;
-        } else {
-            return false;
-        }
+        return getNumbersOfIssues() >= minimumIssueNumber;
     }
 
     public void closeIssuesOfTestProjekt(String projectNameToTest){
