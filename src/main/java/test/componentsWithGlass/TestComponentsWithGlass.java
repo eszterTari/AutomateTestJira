@@ -1,8 +1,6 @@
 package test.componentsWithGlass;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import org.openqa.selenium.WebDriver;
@@ -19,14 +17,20 @@ public class TestComponentsWithGlass {
     private ProjectSettingsPage projectSettingsPage;
     private GlassDocumentPage glassDocumentPage;
 
+    @BeforeAll
+    public static void setupBefore() {
+        Utils.setup();
+    }
+
     @BeforeEach
     public void setup() {
-        Utils.setup();
+
         this.driver = RunEnvironment.getWebDriver();
         login = new Login(this.driver);
         navigateToPages = new NavigateToPages(this.driver);
         projectSettingsPage = new ProjectSettingsPage(this.driver);
         glassDocumentPage = new GlassDocumentPage(this.driver);
+        //login.login();
     }
 
     @Test
@@ -38,6 +42,7 @@ public class TestComponentsWithGlass {
         String inputAssigne2 = "Component lead";
         String inputAssigne3 = "Project lead";
         String inputAssigne4 = "Unassigned";
+
 
         login.login();
 
@@ -84,36 +89,41 @@ public class TestComponentsWithGlass {
                 + " is not presented in the component list");
     }
 
-    @Test
-    void testVerifyLoggedUserPermissions() {
-        String projectName = "Private Project 4";
+    @ParameterizedTest
+    @CsvFileSource(resources = "/permissions/permissionsForUser.csv", numLinesToSkip = 1)
+    void testVerifyLoggedUserPermissions(String projectName, int permBrowse, int permitCreate, int permitEdit) {
+        //TODO: more people
+        String userName = "user7";
+        //String projectName = "Private Project 4";
         String browseProject = "Browse Projects";
         String createIssue = "Create Issues";
         String editIssue = "Edit Issues";
 
-        login.loginWithDashboard("user6", System.getenv("password"));
+        //login.login();
+        driver.navigate().to("https://jira.codecool.codecanvas.hu/login.jsp");
+        if(!login.isLoggedIn()) login.loginWithDashboard(userName, System.getenv("password"));
 
         navigateToPages.goToTheProject(projectName);
         navigateToPages.clickOnGlassDocumentNavItem();
         glassDocumentPage.clickOnPermissionNavItem();
 
+        int result1 = glassDocumentPage.hasCurrentUserPermissionFor(browseProject) ? 1 : 0;
+        int result2 = glassDocumentPage.hasCurrentUserPermissionFor(createIssue) ? 1 : 0;
+        int result3 = glassDocumentPage.hasCurrentUserPermissionFor(editIssue) ? 1 : 0;
 
-        assertAll("Test does user have permissions",
-                () -> assertTrue(glassDocumentPage.hasCurrentUserPermissionFor(browseProject)),
-                () -> assertTrue(glassDocumentPage.hasCurrentUserPermissionFor(createIssue)),
-                () -> assertTrue(glassDocumentPage.hasCurrentUserPermissionFor(editIssue))
-        );
-    }
-
-    //Sample code
-    @ParameterizedTest
-    @CsvFileSource(resources = "/input.csv")
-    void testHelloCsv(String a, String b) {
-        System.out.println(a + " " + b);
+        //assertTrue(result == permit);
+        assertTrue(result1 == permBrowse);
+        assertTrue(result2 == permitCreate);
+        assertTrue(result3 == permitEdit);
     }
 
     @AfterEach
     public void tearDown() {
-        //Utils.tearDown();
+        //login.logout();
+    }
+
+    @AfterAll
+    public static void tearDownAfter() {
+        Utils.tearDown();
     }
 }

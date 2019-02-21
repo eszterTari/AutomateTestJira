@@ -64,6 +64,7 @@ public class NavigateToPages {
     }
 
     public void clickOnGlassDocumentNavItem() {
+        //TODO: wait issue
         wait.until(ExpectedConditions.elementToBeClickable(glassDocMenuItem)).click();
         Utils.acceptAlert(this.driver);
     }
