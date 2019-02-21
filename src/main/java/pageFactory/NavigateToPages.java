@@ -26,7 +26,6 @@ public class NavigateToPages {
 
     @FindBy(xpath = "//div[contains(@class,'projects-sidebar')]//div[contains(@class,'aui-sidebar-body')]" +
             "//a[contains(@href, 'components-page')]")
-    //@FindBy(xpath = "//a[@data-link-id='com.atlassian.jira.jira-projects-plugin:components-page']")
     private WebElement componentsSideMenuItem;
 
     @FindBy(xpath = "//a[@data-link-id='com.codecanvas.glass:glass']")
@@ -54,20 +53,15 @@ public class NavigateToPages {
     public void goToProjectSettingsPage(String projectName) {
         goToTheProject(projectName);
 
-        //TODO: not working all the time
-        //waitForPageLoadComplete(driver, 1000);
-        //driver.manage().timeouts().pageLoadTimeout(5, SECONDS);
         wait.until(ExpectedConditions.elementToBeClickable(projectSettingsMenuItem));
         projectSettingsMenuItem.click();
     }
 
     public void goToComponentsPageWithSideBar() {
-        //TODO: not working all the time
         wait.until(ExpectedConditions.elementToBeClickable(componentsSideMenuItem)).click();
     }
 
     public void clickOnGlassDocumentNavItem() {
-        //TODO: wait issue
         wait.until(ExpectedConditions.elementToBeClickable(glassDocMenuItem)).click();
         Utils.acceptAlert(this.driver);
     }
