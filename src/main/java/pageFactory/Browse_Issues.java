@@ -31,7 +31,7 @@ public class Browse_Issues {
     @FindBy(xpath = "//span[@class='aui-icon aui-icon-small aui-iconfont-refresh-small']")
     WebElement refreshResults;
 
-    @FindBy(xpath = "import java.util.concurrent.TimeUnit;\n")
+    @FindBy(xpath = "//span[contains(text(),'Export')]")
     WebElement exportIssueBtn;
 
     @FindBy(xpath = "//a[@id='project-name-val']")
