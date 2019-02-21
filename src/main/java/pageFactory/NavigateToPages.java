@@ -63,7 +63,7 @@ public class NavigateToPages {
 
     public void goToComponentsPageWithSideBar() {
         //TODO: not working all the time
-        wait.until(ExpectedConditions.elementToBeClickable(componentsSideMenuItem.findElement(By.xpath("..")))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(componentsSideMenuItem)).click();
     }
 
     public void clickOnGlassDocumentNavItem() {
