@@ -22,7 +22,7 @@ public class Browse_Issues {
     @FindBy(xpath = "//button[contains(text(),'Search')]")
     WebElement searchBtnToValidateIssuesPage;
 
-    @FindBy(xpath = "//span[contains(text(),'Project:')]")
+    @FindBy(xpath = "//span[contains(text(),'Project')]")
     WebElement filterForProject;
 
     @FindBy(xpath = "//input[@id='searcher-pid-input']")
