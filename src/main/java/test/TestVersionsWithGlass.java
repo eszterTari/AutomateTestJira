@@ -30,7 +30,7 @@ public class TestVersionsWithGlass {
         driver.manage().window().maximize();
         login = new Login(driver);
         versionsWithGlassPage = new VersionsWithGlassPage(driver);
-        login.loginWithDashboard();
+        login.login();
     }
 
     @Disabled
