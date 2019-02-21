@@ -49,6 +49,16 @@ public class BrowseProjectsTest {
         assertEquals(true, browseProjects.useSearchBarToFindAProject("testing"));
     }
 
+        @Test
+    public void filterByProjectTypes_test() {
+        assertEquals(true, browseProjects.filterByProjectTypes());
+    }
+
+    @Test
+    public void filterByProjectCategories_test() {
+        assertEquals(true, browseProjects.filterByProjectCategories());
+    }
+
     @AfterEach
     public void tearDown() {
         Utils.tearDown();
