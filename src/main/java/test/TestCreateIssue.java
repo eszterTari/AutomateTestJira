@@ -1,12 +1,13 @@
 package test;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
+import javafx.stage.Popup;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import static org.junit.jupiter.api.Assertions.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -17,12 +18,13 @@ import pageFactory.Login;
 import util.RunEnvironment;
 import util.Utils;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class TestCreateIssue {
-    private static WebDriver driver;
-    private static Login login;
+    private WebDriver driver;
+    private Login login;
 
     @BeforeAll
-    static void initAll() {
+    void initAll() {
         Utils.setup();
         driver = RunEnvironment.getWebDriver();
         driver.manage().window().maximize();
@@ -43,12 +45,21 @@ public class TestCreateIssue {
         modal.setProject(project);
         modal.setIssueType(issueType);
         modal.setSummary(summary);
-        String message = modal.submit();
-        System.out.println(message);
-        assertTrue(message.contains(project));
+        CreateIssueModal.PopupMessage popupMessage = modal.submit();
+        System.out.println(popupMessage.message);
+        assertTrue(popupMessage.message.contains(project));
+        assertTrue(popupMessage.message.contains("successfully created"));
+        deleteIssue(popupMessage.urlOfCreatedIssue);
     }
 
     void deleteIssue(String url) {
+        driver.get(url);
+        Browse_Issues browse = new Browse_Issues(driver);
+        browse.deleteSelectedIssue();
+    }
 
+    @AfterAll
+    public void tearDown() {
+        Utils.tearDown();
     }
 }

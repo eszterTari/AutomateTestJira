@@ -59,13 +59,24 @@ public class CreateIssueModal {
         return createAnotherCheckbox.isSelected();
     }
 
-    //returns the link's text in the popup, or empty string, if there were no popup
-    public String submit(){
+    public static class PopupMessage{
+        public PopupMessage(String message, String urlOfCreatedIssue) {
+            this.message = message;
+            this.urlOfCreatedIssue = urlOfCreatedIssue;
+        }
+
+        public String message;
+        public String urlOfCreatedIssue;
+    }
+
+    public PopupMessage submit(){
         submit.click();
         try {
-            return wait.until(ExpectedConditions.visibilityOfElementLocated(popupDivLocator)).getText();
+            WebElement div = wait.until(ExpectedConditions.visibilityOfElementLocated(popupDivLocator));
+            PopupMessage pm = new PopupMessage(div.getText(), div.findElement(By.tagName("a")).getAttribute("href"));
+            return pm;
         }catch(ElementNotVisibleException e){
-            return "";
+            return null;
         }
     }
 

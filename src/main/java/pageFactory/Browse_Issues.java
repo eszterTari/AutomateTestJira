@@ -1,5 +1,6 @@
 package pageFactory;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -39,6 +40,11 @@ public class Browse_Issues {
 
     @FindBy(xpath = "//div[@class='showing']/span")
     WebElement issueCounter;
+
+    @FindBy(id="opsbar-operations_more")
+    WebElement more;
+
+    By deleteIssueLocator = By.xpath("//*[@id='delete-issue']/a");
 
     public Browse_Issues(WebDriver driver) {
         this.driver = driver;
@@ -102,7 +108,11 @@ public class Browse_Issues {
         return numberOfIssues;
     }
 
-
+    public void deleteSelectedIssue(){
+        more.click();
+        wait.until(ExpectedConditions.elementToBeClickable(deleteIssueLocator)).click();
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.id("delete-issue-submit"))).submit();
+    }
 
 
 }
