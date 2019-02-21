@@ -22,7 +22,7 @@ public class Browse_Issues {
     @FindBy(xpath = "//button[contains(text(),'Search')]")
     WebElement searchBtnToValidateIssuesPage;
 
-    @FindBy(xpath = "//span[contains(text(),'Project:')]")
+    @FindBy(xpath = "//span[contains(text(),'Project')]")
     WebElement filterForProject;
 
     @FindBy(xpath = "//input[@id='searcher-pid-input']")
@@ -54,11 +54,7 @@ public class Browse_Issues {
     }
 
     public Boolean isIssuesSearchBtnVisible(){
-        if (searchBtnToValidateIssuesPage.isDisplayed()) {
-            return true;
-        } else {
-            return false;
-        }
+        return searchBtnToValidateIssuesPage.isDisplayed();
     }
 
     public String getProjectNameValue(){
@@ -78,11 +74,7 @@ public class Browse_Issues {
     }
 
     public Boolean isMinimumNumberOfIssuesArePresent(int minimumIssueNumber){
-        if (getNumbersOfIssues() >= minimumIssueNumber) {
-            return true;
-        } else {
-            return false;
-        }
+        return getNumbersOfIssues() >= minimumIssueNumber;
     }
 
     public void closeIssuesOfTestProjekt(String projectNameToTest){
