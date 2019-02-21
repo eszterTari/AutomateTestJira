@@ -38,7 +38,6 @@ public class TestComponentsWithGlass {
         String projectName = "Private Project 4";
         String inputName = "Test Component";
         String inputAssigne1 = "Project default";
-        //TODO: into csv
         String inputAssigne2 = "Component lead";
         String inputAssigne3 = "Project lead";
         String inputAssigne4 = "Unassigned";

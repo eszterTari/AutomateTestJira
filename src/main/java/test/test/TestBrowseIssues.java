@@ -1,4 +1,4 @@
-package test;
+package test.test;
 
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.WebDriver;
@@ -21,7 +21,7 @@ public class TestBrowseIssues {
         driver.manage().window().maximize();
         login = new Login(driver);
         browseIssues = new Browse_Issues(driver);
-        login.loginWithDashboard();
+        login.loginWithDashboard("user2", System.getenv("password"));
     }
 
     //@Disabled

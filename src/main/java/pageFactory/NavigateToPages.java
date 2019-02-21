@@ -20,7 +20,8 @@ public class NavigateToPages {
     @FindBy(id = "project_view_all_link_lnk")
     private WebElement viewAllProjects;
 
-    @FindBy(className = "aui-sidebar-footer")
+    @FindBy(xpath = "//div[contains(@class,'projects-sidebar')]//div[contains(@class,'aui-sidebar-footer')]" +
+            "//a[contains(@href, '/plugins/servlet/project-config/')]")
     private WebElement projectSettingsMenuItem;
 
     @FindBy(xpath = "//a[@data-link-id='com.atlassian.jira.jira-projects-plugin:components-page']")
@@ -54,13 +55,13 @@ public class NavigateToPages {
         //TODO: not working all the time
         //waitForPageLoadComplete(driver, 1000);
         //driver.manage().timeouts().pageLoadTimeout(5, SECONDS);
-        wait.until(ExpectedConditions.visibilityOf(projectSettingsMenuItem.findElement(By.tagName("a"))));
+        wait.until(ExpectedConditions.visibilityOf(projectSettingsMenuItem));
         projectSettingsMenuItem.click();
     }
 
     public void goToComponentsPageWithSideBar() {
         //TODO: not working all the time
-        wait.until(ExpectedConditions.visibilityOf(componentsSideMenuItem.findElement(By.xpath("..")))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(componentsSideMenuItem.findElement(By.xpath("..")))).click();
     }
 
     public void clickOnGlassDocumentNavItem() {
