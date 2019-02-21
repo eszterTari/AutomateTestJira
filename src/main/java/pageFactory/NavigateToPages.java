@@ -24,7 +24,9 @@ public class NavigateToPages {
             "//a[contains(@href, '/plugins/servlet/project-config/')]")
     private WebElement projectSettingsMenuItem;
 
-    @FindBy(xpath = "//a[@data-link-id='com.atlassian.jira.jira-projects-plugin:components-page']")
+    @FindBy(xpath = "//div[contains(@class,'projects-sidebar')]//div[contains(@class,'aui-sidebar-body')]" +
+            "//a[contains(@href, 'components-page')]")
+    //@FindBy(xpath = "//a[@data-link-id='com.atlassian.jira.jira-projects-plugin:components-page']")
     private WebElement componentsSideMenuItem;
 
     @FindBy(xpath = "//a[@data-link-id='com.codecanvas.glass:glass']")
@@ -55,7 +57,7 @@ public class NavigateToPages {
         //TODO: not working all the time
         //waitForPageLoadComplete(driver, 1000);
         //driver.manage().timeouts().pageLoadTimeout(5, SECONDS);
-        wait.until(ExpectedConditions.visibilityOf(projectSettingsMenuItem));
+        wait.until(ExpectedConditions.elementToBeClickable(projectSettingsMenuItem));
         projectSettingsMenuItem.click();
     }
 
@@ -73,4 +75,5 @@ public class NavigateToPages {
     private String getProjectXPath(String projectName) {
         return ".//*[@original-title = '" + projectName + "']";
     }
+
 }
