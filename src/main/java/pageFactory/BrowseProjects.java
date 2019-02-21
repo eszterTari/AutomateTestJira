@@ -34,11 +34,8 @@ public class BrowseProjects {
     @FindBy(linkText = "TOUCAN projekt")
     WebElement toucanProjectLink;
 
-    @FindBy(xpath = "//*[@id=\"content\"]/div[1]/div/div[1]/header/div/div[2]/h1/div/div/a")
+    @FindBy(xpath = "//div[contains(@class,'aui-sidebar-body')]//div[contains(@class,'project-title')]//a")
     WebElement projectNameOnDetailedPage;
-
-    @FindBy(css = "span[title='Reports']")
-    WebElement reportsSideBarMenuPoint;
 
     @FindBy(className = "subnavigator-title")
     WebElement subNavigatorTitle;
@@ -116,4 +113,5 @@ public class BrowseProjects {
         }
         return true;
     }
+
 }
