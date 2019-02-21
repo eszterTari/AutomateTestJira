@@ -33,7 +33,7 @@ public class CreateIssueModal {
     public void setProject(String project){
         WebElement projectField = wait.until(ExpectedConditions.elementToBeClickable(projectFieldLocator));
         projectField.sendKeys(project);
-        projectField.sendKeys(Keys.ENTER);
+        projectField.sendKeys(Keys.RETURN);
     }
 
     public void setIssueType(String issueType){
@@ -47,7 +47,7 @@ public class CreateIssueModal {
         summaryField.sendKeys(summary);
     }
 
-    public void setAssignee(){}
+    public void setAssignee(String assignee){}
 
     public void setPriority(String priority){}
 

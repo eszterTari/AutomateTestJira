@@ -11,31 +11,34 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import pageFactory.Browse_Issues;
 import pageFactory.CreateIssueModal;
 import pageFactory.Login;
+import util.RunEnvironment;
+import util.Utils;
 
 public class TestCreateIssue {
     private static WebDriver driver;
+    private static Login login;
 
     @BeforeAll
     static void initAll() {
-        System.setProperty("webdriver.chrome.driver", "/usr/lib/chromium-browser/chromedriver");
-        ChromeOptions options = new ChromeOptions();
-//        options.addArguments("headless");
-        options.addArguments("start-maximized");
-        driver = new ChromeDriver(options);
-//        driver.get("https://jira.codecool.codecanvas.hu");
+        Utils.setup();
+        driver = RunEnvironment.getWebDriver();
+        driver.manage().window().maximize();
+        login = new Login(driver);
+
     }
 
     @BeforeEach
-    void beforeEach(){
-        new Login(driver).loginWithDashboard();
+    void beforeEach() {
+        login.login();
     }
 
     @ParameterizedTest
-    @CsvFileSource(resources="/createIssue.csv", numLinesToSkip = 1)
-    void createIssue(String project, String issueType, String summary){
-        new WebDriverWait(driver,10).until(ExpectedConditions.elementToBeClickable(By.id("create_link"))).click();
+    @CsvFileSource(resources = "/createIssue.csv", numLinesToSkip = 1)
+    void createIssue(String project, String issueType, String summary) {
+        new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(By.id("create_link"))).click();
         CreateIssueModal modal = new CreateIssueModal(driver);
         modal.setProject(project);
         modal.setIssueType(issueType);
@@ -45,7 +48,7 @@ public class TestCreateIssue {
         assertTrue(message.contains(project));
     }
 
-    void deleteIssue(String url){
+    void deleteIssue(String url) {
 
     }
 }
