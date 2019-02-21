@@ -25,7 +25,7 @@ public class NavigateToPages {
     private WebElement projectSettingsMenuItem;
 
     @FindBy(xpath = "//div[contains(@class,'projects-sidebar')]//div[contains(@class,'aui-sidebar-body')]" +
-            "//a[contains(@href, 'components-page')]")
+            "//div[contains(@class, 'aui-sidebar-group aui-sidebar-group-tier-one')]//a[contains(@href, 'com.atlassian.jira.jira-projects-plugin:components-page')]")
     private WebElement componentsSideMenuItem;
 
     @FindBy(xpath = "//a[@data-link-id='com.codecanvas.glass:glass']")
@@ -53,8 +53,7 @@ public class NavigateToPages {
     public void goToProjectSettingsPage(String projectName) {
         goToTheProject(projectName);
 
-        wait.until(ExpectedConditions.elementToBeClickable(projectSettingsMenuItem));
-        projectSettingsMenuItem.click();
+        wait.until(ExpectedConditions.elementToBeClickable(projectSettingsMenuItem)).click();
     }
 
     public void goToComponentsPageWithSideBar() {
