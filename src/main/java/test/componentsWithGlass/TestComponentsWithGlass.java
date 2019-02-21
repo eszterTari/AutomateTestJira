@@ -84,13 +84,6 @@ public class TestComponentsWithGlass {
                 + " is not presented in the component list");
     }
 
-    //Sample code
-    @ParameterizedTest
-    @CsvFileSource(resources = "/input.csv")
-    void testHelloCsv(String a, String b) {
-        System.out.println(a + " " + b);
-    }
-
     @AfterEach
     public void tearDown() {
         //Utils.tearDown();
