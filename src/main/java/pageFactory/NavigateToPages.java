@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import util.Utils;
@@ -25,7 +26,7 @@ public class NavigateToPages {
     private WebElement projectSettingsMenuItem;
 
     @FindBy(xpath = "//div[contains(@class,'projects-sidebar')]//div[contains(@class,'aui-sidebar-body')]" +
-            "//a[contains(@href, 'components-page')]")
+            "//div[contains(@class, 'aui-sidebar-group aui-sidebar-group-tier-one')]//a[contains(@href, 'com.atlassian.jira.jira-projects-plugin:components-page')]")
     private WebElement componentsSideMenuItem;
 
     @FindBy(xpath = "//a[@data-link-id='com.codecanvas.glass:glass']")
@@ -53,21 +54,33 @@ public class NavigateToPages {
     public void goToProjectSettingsPage(String projectName) {
         goToTheProject(projectName);
 
-        wait.until(ExpectedConditions.elementToBeClickable(projectSettingsMenuItem));
-        projectSettingsMenuItem.click();
+        waitUntilBeingClickable(projectSettingsMenuItem);
+
+        wait.until(ExpectedConditions.elementToBeClickable(projectSettingsMenuItem)).click();
     }
 
     public void goToComponentsPageWithSideBar() {
+        waitUntilBeingClickable(componentsSideMenuItem);
         wait.until(ExpectedConditions.elementToBeClickable(componentsSideMenuItem)).click();
     }
 
     public void clickOnGlassDocumentNavItem() {
+        waitUntilBeingClickable(glassDocMenuItem);
         wait.until(ExpectedConditions.elementToBeClickable(glassDocMenuItem)).click();
         Utils.acceptAlert(this.driver);
     }
 
     private String getProjectXPath(String projectName) {
         return ".//*[@original-title = '" + projectName + "']";
+    }
+
+    private void waitUntilBeingClickable(WebElement element) {
+        try {
+            wait.until((ExpectedCondition<Boolean>) driver -> ! element.isEnabled());
+            wait.until((ExpectedCondition<Boolean>) driver -> element.isEnabled());
+        } catch (Exception e) {
+            // no problem
+        }
     }
 
 }
