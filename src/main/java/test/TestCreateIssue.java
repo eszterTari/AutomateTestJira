@@ -32,15 +32,12 @@ public class TestCreateIssue {
     void testcreateAnIssueByButton() {
         login.login();
         createIssue.createAnIssueByButton("Toucan", "Task");
-
-
-//        Assertions.assertTrue(login.wrongLogin(), "Test login with wrong inputs");
-//        Assertions.assertFalse(login.isLoggedIn(), "Confirm you are not logged in");
+        Assertions.assertTrue(createIssue.isIssueCreateSuccessfully(), "Confirm issue is successfully created.");
     }
 
 
-//    @AfterEach
-//    public void tearDown() {
-//        Utils.tearDown();
-//    }
+    @AfterEach
+    public void tearDown() {
+        Utils.tearDown();
+    }
 }

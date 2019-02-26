@@ -7,6 +7,8 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import static org.openqa.selenium.By.xpath;
+
 public class CreateIssue {
     WebDriver driver;
     WebDriverWait wait;
@@ -75,10 +77,9 @@ public class CreateIssue {
         wait.until(ExpectedConditions.visibilityOf(summarySelectInForm)).sendKeys(" KRK");
         wait.until(ExpectedConditions.textToBePresentInElement(summarySelectInForm, summarySelectInForm.getText()));
 
-        wait.until(ExpectedConditions.elementToBeClickable(cancelInForm)).click();
-//        wait.until(ExpectedConditions.elementToBeClickable(createbtnInForm)).click();
-        acceptAlert(driver);
-//        System.out.println(getPopupMessage());
+//        wait.until(ExpectedConditions.elementToBeClickable(cancelInForm)).click();
+        wait.until(ExpectedConditions.elementToBeClickable(createbtnInForm)).click();
+//        acceptAlert(driver);
 
     }
     public void acceptAlert(WebDriver driver) {
@@ -88,11 +89,13 @@ public class CreateIssue {
             Alert alert = driver.switchTo().alert();
             alert.accept();
         } catch (Exception e) {
-            //exception handling
+            //nothing to do
         }
     }
 
-    public String getPopupMessage() {
-        return popupCreateIssue.getText();
+    public Boolean isIssueCreateSuccessfully() {
+        By popupField = xpath("//div[@id='aui-flag-container']");
+        wait.until(ExpectedConditions.presenceOfElementLocated(popupField));
+        return popupCreateIssue.isDisplayed();
     }
 }
