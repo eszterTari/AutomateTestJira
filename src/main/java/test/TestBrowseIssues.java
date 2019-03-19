@@ -1,5 +1,3 @@
-package test.test;
-
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.WebDriver;
 import pageFactory.Browse_Issues;

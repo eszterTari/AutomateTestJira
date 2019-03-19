@@ -1,4 +1,4 @@
-package test.componentsWithGlass;
+package componentsWithGlass;
 
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;

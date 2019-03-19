@@ -1,5 +1,3 @@
-package test;
-
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
@@ -21,6 +19,7 @@ public class TestLogin {
         driver = RunEnvironment.getWebDriver();
         login = new Login(driver);
         driver.manage().window().maximize();
+        System.err.println("SETIP");
     }
 
     @DisplayName("Test login with wrong and empty details")
@@ -35,7 +34,8 @@ public class TestLogin {
     @DisplayName("Successful login test")
     @Test
     public void testSuccessfulLoginAndLogout() {
-        login.login();
+        System.err.println("test: " + System.getenv("username"));
+        login.loginWithDashboard(System.getenv("username"), System.getenv("password"));
         Assertions.assertTrue(login.isLoggedIn(), "Confirm the login was successful");
         login.logout();
         Assertions.assertFalse(login.isLoggedIn(), "Confirm the logout was successful");
