@@ -35,7 +35,7 @@ public class TestCreateIssue {
     @Test
     public void testCreateAnIssueByButton() {
         createIssue = new CreateIssue(driver);
-        createIssue.createAnIssueByButton("Toucan", "Task", "KRK");
+        createIssue.createAnIssueByButton("Jeti", "Story", "KRK");
         Assertions.assertTrue(createIssue.isIssueCreateSuccessfully(), "Confirm issue is successfully created.");
     }
 

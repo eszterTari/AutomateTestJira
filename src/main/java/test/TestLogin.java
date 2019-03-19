@@ -1,3 +1,5 @@
+package test;
+
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
@@ -19,7 +21,7 @@ public class TestLogin {
         driver = RunEnvironment.getWebDriver();
         login = new Login(driver);
         driver.manage().window().maximize();
-        System.err.println("SETIP");
+        System.err.println("SETUP");
     }
 
     @DisplayName("Test login with wrong and empty details")
