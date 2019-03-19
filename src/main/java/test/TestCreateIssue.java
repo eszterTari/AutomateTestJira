@@ -2,21 +2,11 @@ package test;
 
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.aggregator.ArgumentsAccessor;
 import org.junit.jupiter.params.provider.CsvFileSource;
-import org.junit.jupiter.params.provider.CsvSource;
 import org.openqa.selenium.WebDriver;
 import pageFactory.CreateIssue;
-import javafx.stage.Popup;
-import org.junit.jupiter.api.*;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvFileSource;
 import static org.junit.jupiter.api.Assertions.*;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import pageFactory.Browse_Issues;
@@ -25,57 +15,28 @@ import pageFactory.Login;
 import util.RunEnvironment;
 import util.Utils;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class TestCreateIssue {
-
-    Login login;
-    CreateIssue createIssue;
-    WebDriver driver;
+    private Login login;
+    private CreateIssue createIssue;
+    private WebDriver driver;
 
     @BeforeEach
     public void setup() {
         Utils.setup();
         driver = RunEnvironment.getWebDriver();
         login = new Login(driver);
-        createIssue = new CreateIssue(driver);
         driver.manage().window().maximize();
+        login.login();
 
     }
 
     @DisplayName("Test create issue with exist project")
     @Test
     public void testCreateAnIssueByButton() {
-        login.login();
+        createIssue = new CreateIssue(driver);
         createIssue.createAnIssueByButton("Toucan", "Task", "KRK");
         Assertions.assertTrue(createIssue.isIssueCreateSuccessfully(), "Confirm issue is successfully created.");
-    }
-
-    @DisplayName("Test create all combination: Available Projects: TOUCAN, JETI, COALA" +
-                 "Expected Issue Types: Story, Task, Bug, Sub-task")
-    @Test
-    public void testCreateIssueAllCombine() {
-        login.login();
-
-    }
-
-
-    @AfterEach
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class TestCreateIssue {
-    private WebDriver driver;
-    private Login login;
-
-    @BeforeAll
-    void initAll() {
-        Utils.setup();
-        driver = RunEnvironment.getWebDriver();
-        driver.manage().window().maximize();
-        login = new Login(driver);
-
-    }
-
-    @BeforeEach
-    void beforeEach() {
-        login.login();
     }
 
     @ParameterizedTest
@@ -99,7 +60,7 @@ public class TestCreateIssue {
         browse.deleteSelectedIssue();
     }
 
-    @AfterAll
+    @AfterEach
     public void tearDown() {
         Utils.tearDown();
     }
